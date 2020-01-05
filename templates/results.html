@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import jquery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!--Import chart js-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+  <script>
+
+    $(document).ready(function () {
+
+      //code to render the charts
+      //var chartClass = ['myChart1', 'myChart2', 'myChart3', 'myChart4', 'myChart5', 'myChart6', 'myChart7', 'myChart8', 'myChart9', 'myChart10'];
+      var data = {{ data| tojson }};
+
+      var dataset_noun = JSON.parse(data[0]);
+      var values_noun = dataset_noun['data'];
+      var labels_noun = dataset_noun['index'];
+
+      var dataset_verb = JSON.parse(data[1]);
+      var values_verb = dataset_verb['data'];
+      var labels_verb = dataset_verb['index'];
+
+      var dataset_adjective = JSON.parse(data[2]);
+      var values_adjective = dataset_adjective['data'];
+      var labels_adjective = dataset_adjective['index'];
+
+      var dataset_adverb = JSON.parse(data[3]);
+      var values_adverb = dataset_adverb['data'];
+      var labels_adverb = dataset_adverb['index'];
+
+
+      var ctx = document.getElementById('myChart1').getContext('2d');
+      var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+          labels: labels_noun,
+          datasets: [{
+            label: 'Keyword Count',
+            backgroundColor: 'rgba(255, 165, 0, 1.0)',
+            borderColor: 'rgba(255, 165, 0, 1)',
+            data: values_noun,
+          }]
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              stacked: true
+            }],
+            yAxes: [{
+              stacked: false
+            }]
+          },
+          title: {
+            display: true,
+            text: 'Nouns'
+          }
+        }
+
+      });
+
+      var ctx = document.getElementById('myChart2').getContext('2d');
+      var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+          labels: labels_verb,
+          datasets: [{
+            label: 'Keyword Count',
+            backgroundColor: 'rgba(255, 165, 0, 1.0)',
+            borderColor: 'rgba(255, 165, 0, 1)',
+            data: values_verb,
+          }]
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              stacked: true
+            }],
+            yAxes: [{
+              stacked: false
+            }]
+          },
+          title: {
+            display: true,
+            text: 'Verbs'
+          }
+        }
+
+      });
+
+      var ctx = document.getElementById('myChart3').getContext('2d');
+      var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+          labels: labels_adjective,
+          datasets: [{
+            label: 'Keyword Count',
+            backgroundColor: 'rgba(255, 165, 0, 1.0)',
+            borderColor: 'rgba(255, 165, 0, 1)',
+            data: values_adjective,
+          }]
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              stacked: true
+            }],
+            yAxes: [{
+              stacked: false
+            }]
+          },
+          title: {
+            display: true,
+            text: 'Adjectives'
+          }
+        }
+
+      });
+
+      var ctx = document.getElementById('myChart4').getContext('2d');
+      var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+          labels: labels_adverb,
+          datasets: [{
+            label: 'Keyword Count',
+            backgroundColor: 'rgba(255, 165, 0, 1.0)',
+            borderColor: 'rgba(255, 165, 0, 1)',
+            data: values_adverb,
+          }]
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              stacked: true
+            }],
+            yAxes: [{
+              stacked: false
+            }]
+          },
+          title: {
+            display: true,
+            text: 'Adverbs'
+          }
+        }
+
+      });
+
+
+
+
+
+        }); //onready
+
+
+
+
+  </script>
+
+
+  <title>{{searchQuery}}</title>
+</head>
+
+<body>
+
+</body>
+
+
+<body>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+
+      <h1 class="header center orange-text">
+        <img src="{{url_for('static', filename='RR.png')}}" alt="logo">
+        <Br>
+        <h5 class="header col s12 light center ">Learn what skills and keywords hiring managers are looking for in NYC!
+        </h5>
+      </h1>
+      <div class="row center">
+        <br>
+        <br>
+
+        <h4>Topic results for the following search term: {{searchQuery}}</h4>
+        <Br>
+        <br>
+
+        <div class="col s6"><canvas id="myChart1"></canvas></div>
+        <div class="col s6"><canvas id="myChart2"></canvas></div>
+        <div class="col s6"><canvas id="myChart3"></canvas></div>
+        <div class="col s6"><canvas id="myChart4"></canvas></div>
+
+      </div>
+
+      <br><br>
+
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="section">
+
+
+    </div>
+    <br><br>
+  </div>
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our
+            full time job. Any amount would help support and continue development on this project and is greatly
+            appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

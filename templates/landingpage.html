@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+
+        $(document).ready(function() {
+            $( ".loader" ).hide();
+            <!-- Redirect to python route to display results passing the query in the URL-->
+            $(".searchbutton").click(function() {
+                queryText = $(".querytext").val();
+                resultsURL = "/result/" + queryText;
+                if (queryText.trim() != "") {
+                    $( ".mainbody" ).hide();
+                    $( ".loader" ).show();
+                    window.location.href = resultsURL;
+                }
+                else{
+                    alert("You must enter a search term")
+                }
+
+            });
+
+        });
+    </script>
+
+
+    <title>{{searchQuery}}</title>
+</head>
+<body>
+
+</body>
+
+
+<body>
+  <div class="section no-pad-bot mainbody" id="index-banner">
+    <div class="container">
+      <br><br>
+
+      <h1 class="header center orange-text">
+          <img src="{{url_for('static', filename='RR.png')}}" alt="logo">
+          <Br>
+          <h5 class="header col s12 light center ">Learn what skills and keywords hiring managers are looking for in NYC!</h5>
+      </h1>
+      <div class="row center">
+
+      </div>
+      <div class="row center">
+          <form class="col s12">
+              <div class="row">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">search</i>
+                  <textarea id="icon_prefix2" class="materialize-textarea querytext"></textarea>
+                  <label for="icon_prefix2">Search for a Job</label>
+                </div>
+              </div>
+        </form>
+
+        <a class="waves-effect waves-light btn-large blue searchbutton"><i class="material-icons left">arrow_forward</i>Search</a>
+      </div>
+      <br><br>
+
+    </div>
+  </div>
+<div class="loader container center">
+    <br><br><br>
+    <img src="{{url_for('static', filename='RR.png')}}" alt="logo"><br><br>
+  <div class="preloader-wrapper big active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div><br>
+<h6>Scrapping Indeed jobs and running Topic models may take several minutes!</h6>
+</div>
+
+  <div class="container">
+    <div class="section">
+
+
+    </div>
+    <br><br>
+  </div>
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+  </body>
+</html>
