@@ -62,7 +62,7 @@ class termEstimator:
         # create a vocabulary of words,
         # ignore words that appear in 97% of documents,
         # eliminate stop words
-        cv = CountVectorizer(max_df=0.97, token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b', stop_words=stopwords,
+        cv = CountVectorizer(max_df=0.99, token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b', stop_words=stopwords,
                              max_features=10000)
         word_count_vector = cv.fit_transform(docs)
 

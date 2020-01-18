@@ -20,8 +20,8 @@ def read_file(filename):
         return(config_dictionary)
 
 
-def scrape_call():
-    scrapper_object = prototypeScrapper()
+def scrape_call(searchQuery):
+    scrapper_object = prototypeScrapper(searchQuery)
     print("#### page values ####")
     print(scrapper_object.page_data_list)
     print("#### json objects ####")
@@ -41,7 +41,7 @@ def displaySearch():
 @app.route('/result/<searchQuery>')
 def diplayresult(searchQuery):
     print("placeholder2")
-    data = scrape_call()
+    data = scrape_call(searchQuery)
     return render_template('results.html',searchQuery=searchQuery,data=data)
 
 # run flask app

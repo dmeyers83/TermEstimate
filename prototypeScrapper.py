@@ -66,7 +66,7 @@ class prototypeScrapper:
 
     def run_indeed_query(self, q='Python Developer', l='New+York+State'):
         start = 0  # pagnigation variable, page 1 = 0, page 2 = 10, page 3 = 30, etc
-        numPage = 20  # num pages to scrap links from
+        numPage = 5  # num pages to scrap links from
 
         for page_result in range(numPage):
             start = page_result * 10  # increment the variable used to denote the next page
