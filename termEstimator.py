@@ -11,6 +11,7 @@ class termEstimator:
     page_data =[] #list of documents
     term_data = []
     df = pd.DataFrame()
+    df_all_count = pd.DataFrame()
 
     def __init__(self, page_data):
         self.page_data = page_data
@@ -62,8 +63,8 @@ class termEstimator:
         # create a vocabulary of words,
         # ignore words that appear in 97% of documents,
         # eliminate stop words
-        cv = CountVectorizer(max_df=0.99, token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b', stop_words=stopwords,
-                             max_features=10000)
+        cv = CountVectorizer(token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b', stop_words=stopwords,
+                             max_features=10000, ngram_range=(1,2))
         word_count_vector = cv.fit_transform(docs)
 
         tfidf_transformer = TfidfTransformer(smooth_idf=True, use_idf=True, sublinear_tf=True)
@@ -109,12 +110,14 @@ class termEstimator:
                           'JJ': 'Adjective','JJR': 'Adjective','JSS': 'Adjective','RB': 'Adverb','RBR': 'Adverb','RBS ': 'Adverb'})
 
         #split POS sections into indivual dataframes
+
         df_noun = self.df.loc[(self.df['POS'] == "Noun")]
         df_verb = self.df.loc[(self.df['POS'] == "Verb")]
         df_adverb = self.df.loc[(self.df['POS'] == "Adverb")]
         df_adjective = self.df.loc[(self.df['POS'] == "Adjective")]
 
         #df_agg_count = df.groupby(['keyword','POS'])['Score'].agg({"keyword_count": "count", "score_sum": "sum"}).sort_values(['keyword_count'],ascending=False)
+
         df_agg_count_noun = df_noun.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
         df_agg_count_verb = df_verb.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
         df_agg_count_adjective =df_adjective.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]

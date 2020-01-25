@@ -12,9 +12,12 @@ class prototypeScrapper:
 
     allLinks = []  # list to capture
     page_data_list = []  # list of all docuemnts
+    job_title_list = []
+    job_company_list = []
 
     def __init__(self, q='Python Developer', l='New+York+State'):
         self.run_indeed_query(q,l)
+        self.write_lst(self.allLinks, "link_list.csv")
         return self.scrape_pages()
 
     # uses webdriver object to execute javascript code and get dynamically loaded webcontent
@@ -41,13 +44,13 @@ class prototypeScrapper:
         return soup
 
     # helper function to write lists to files
-    def write_lst(lst, file_):
+    def write_lst(self, lst, file_):
         with open(file_, 'w') as f:
             for l in lst:
                 f.write(l)
                 f.write('\n')
 
-    def read_list(file):
+    def read_list(self, file):
         f = open(file, 'r')
         return f.readlines()
 
@@ -58,10 +61,21 @@ class prototypeScrapper:
         soup = self.get_js_soup(dir_url, browser)
         for link_holder in soup.find_all('div', class_='title'):  # get list of all <div> of class 'photo nocaption'
             rel_link = link_holder.find('a')['href']  # get url
+            rel_title = link_holder.find('a')['title']
             # url returned is relative, so we need to add base url
             if rel_link != '':
                 indeed_links.append('https://www.indeed.com' + rel_link)
+                self.job_title_list.append((rel_title))
+
+        for company_holder in soup.find_all('span', class_='company'):  # get list of all <div> of class 'photo nocaption'
+            rel_company = company_holder.getText()  # get url
+            # url returned is relative, so we need to add base url
+            if rel_company != '':
+                self.job_company_list.append((rel_company))
+
         print('-' * 20, 'Found {} indeed search urls'.format(len(indeed_links)), '-' * 20)
+        print(self.job_company_list)
+        print(self.job_title_list)
         return indeed_links
 
     def run_indeed_query(self, q='Python Developer', l='New+York+State'):
@@ -93,5 +107,20 @@ class prototypeScrapper:
             footer_position = page_data.find('save job')  # find the position of 'save job' which starts the footer
             trimStringBy = footer_position - len(page_data)  # returns a negative number to trim the string by
             page_data = page_data[:trimStringBy]  # drop footer
+
+            #Drop tech before requirements/skills/qualifications sections
+            drop_company_pos = 100000000 #high value to start
+            description_skills = ['responsibility','responsibilities','qualities','skills','must haves','requirements','qualifications','duties','required']
+            for item in description_skills:
+                position = page_data.find(item)
+                if (position < drop_company_pos) and (position != -1):
+                    drop_company_pos = position
+
+            if drop_company_pos != 100000000:
+                page_data = page_data[drop_company_pos:]
+            else:
+                page_data = ""
+
+
             page_data = remove_stopwords(page_data)
             self.page_data_list.append(page_data)
