@@ -23,8 +23,11 @@ class dbConnection:
 
         self.nameCollection = self.nameDB[collection]
 
-
-
     def insertData(self, jsonObject):
         self.nameCollection.insert_many(jsonObject)
 
+    def returnUniqueQueryValues(self):
+        return self.nameCollection.distinct("query")
+
+    def returnQueryValues(self, query):
+        return self.nameCollection.find({"query":query})

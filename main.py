@@ -1,12 +1,12 @@
 # import flask library
 from flask import Flask, escape, url_for, render_template, request
-from prototypeScrapper import prototypeScrapper
-from termEstimator import termEstimator
-import pickle
+#from prototypeScrapper import prototypeScrapper
+#from termEstimator import termEstimator
+#import pickle
 import json
 # initialize flask app
 app = Flask(__name__)
-
+from databaseConnection import dbConnection
 
 def save_file(object):
     with open('text_save.txt', 'wb') as config_dictionary_file:
@@ -34,7 +34,10 @@ def scrape_call(searchQuery):
 @app.route('/')
 def displaySearch():
     print("placeholder")
-    return render_template('landingpage.html')
+    db = dbConnection()
+    query = db.returnUniqueQueryValues()
+    print(query)
+    return render_template('landingpage.html', searchValues=query)
 
 
 # path to render the results page.  the searchQuery parameter is passed from the landing page.

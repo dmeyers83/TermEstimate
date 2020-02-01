@@ -10,13 +10,29 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import jquery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
+
+        var searchValues = {{ searchValues| tojson }};
+
+        document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('.autocomplete');
+          var instances = M.Autocomplete.init(elems, {
+            data:{
+                  "Apple": null,
+                  "Microsoft": null,
+                  "Google": 'https://placehold.it/250x250'
+                },
+          });
+        });
+
 
         $(document).ready(function() {
             $( ".loader" ).hide();
             <!-- Redirect to python route to display results passing the query in the URL-->
+
+
             $(".searchbutton").click(function() {
                 queryText = $(".querytext").val();
                 resultsURL = "/result/" + queryText;
@@ -30,6 +46,8 @@
                 }
 
             });
+
+
 
         });
     </script>
@@ -47,11 +65,10 @@
     <div class="container">
       <br><br>
 
-      <h1 class="header center orange-text">
-          <img src="{{url_for('static', filename='RR.png')}}" alt="logo">
-          <Br>
-          <h5 class="header col s12 light center ">Learn what skills and keywords hiring managers are looking for in NYC!</h5>
-      </h1>
+    <div class="row center">
+          <img src="{{url_for('static', filename='moneyword.png')}}" alt="logo">
+          <h6 class="header col s12 light center ">Find out what words will help you earn more money</h6>
+      </div>
       <div class="row center">
 
       </div>
@@ -60,13 +77,15 @@
               <div class="row">
                 <div class="input-field col s12">
                   <i class="material-icons prefix">search</i>
-                  <textarea id="icon_prefix2" class="materialize-textarea querytext"></textarea>
-                  <label for="icon_prefix2">Search for a Job</label>
+                  <input type="text" id="autocomplete-input" class="autocomplete querytext">
+                  <label for="autocomplete-input">Search for a Job</label>
+<!--                  <textarea id="icon_prefix2" class="materialize-textarea querytext"></textarea>-->
+<!--                  <label for="icon_prefix2">Search for a Job</label>-->
                 </div>
               </div>
         </form>
 
-        <a class="waves-effect waves-light btn-large blue searchbutton"><i class="material-icons left">arrow_forward</i>Search</a>
+        <a class="waves-effect waves-light btn-large green searchbutton"><i class="material-icons left">arrow_forward</i>Search</a>
       </div>
       <br><br>
 
@@ -74,7 +93,7 @@
   </div>
 <div class="loader container center">
     <br><br><br>
-    <img src="{{url_for('static', filename='RR.png')}}" alt="logo"><br><br>
+    <img src="{{url_for('static', filename='moneyword.png')}}" alt="logo"><br><br>
   <div class="preloader-wrapper big active">
     <div class="spinner-layer spinner-blue-only">
       <div class="circle-clipper left">
@@ -97,12 +116,12 @@
     <br><br>
   </div>
 
-  <footer class="page-footer orange">
+  <footer class="page-footer grey ">
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
           <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+          <p class="grey-text text-lighten-4">Just a couple of guys trying to make their first million (or 2)</p>
 
 
         </div>
@@ -128,7 +147,7 @@
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      Made by <a class="orange-text text-lighten-3">Doug Meyers</a>
       </div>
     </div>
   </footer>
