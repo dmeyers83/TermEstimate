@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import jquery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!--Import chart js-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.material.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">
+  <script>
+
+    $(document).ready(function () {
+
+    var data = {{ data | tojson }};
+    console.log(data);
+    $('#table_id').DataTable( {
+    data: data,
+    pageLength: 20,
+    order: [3,'desc']  ,
+    columnDefs: [
+        {
+          targets: [ 0, 1, 2 ],
+          className: 'mdl-data-table__cell--non-numeric'
+        }
+      ],
+      columns: [
+          { data: 'keyword' },
+          { data: 'POS' },
+          { data: 'query' },
+          { data: 'keyword_count' }
+      ]
+  } );
+
+
+
+    }); //onready
+
+
+
+
+  </script>
+
+
+  <title>{{searchQuery}}</title>
+</head>
+
+<body>
+
+</body>
+
+
+<body>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+          <div class="row center">
+          <img src="{{url_for('static', filename='moneyword.png')}}" alt="logo">
+          <h6 class="header col s12 light center ">Find out what words will help you earn more money</h6>
+      </div>
+      <div class="row center">
+     <table id="table_id" class="mdl-data-table" style="width:100%">
+       <thead>
+        <tr>
+            <th>Keyword</th>
+            <th>POS</th>
+            <th>Job</th>
+           <th>Score</th>
+        </tr>
+       </thead>
+     </table>
+
+
+      </div>
+
+      <br><br>
+
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="section">
+
+
+    </div>
+    <br><br>
+  </div>
+
+  <footer class="page-footer grey ">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">Just a couple of guys trying to make their first million (or 2)</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3">Doug Meyers</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

@@ -30,4 +30,7 @@ class dbConnection:
         return self.nameCollection.distinct("query")
 
     def returnQueryValues(self, query):
-        return self.nameCollection.find({"query":query})
+        result = self.nameCollection.find({"query":query, "keyword_count" : {"$gte" : 10}},{"_id": 0, "time":0 })
+        list_result = list(result)
+        print (list_result)
+        return (list_result)

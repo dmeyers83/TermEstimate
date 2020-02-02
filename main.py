@@ -8,6 +8,8 @@ import json
 app = Flask(__name__)
 from databaseConnection import dbConnection
 
+db = dbConnection()
+
 def save_file(object):
     with open('text_save.txt', 'wb') as config_dictionary_file:
         # Step 3
@@ -34,18 +36,21 @@ def scrape_call(searchQuery):
 @app.route('/')
 def displaySearch():
     print("placeholder")
-    db = dbConnection()
+
     query = db.returnUniqueQueryValues()
-    print(query)
-    return render_template('landingpage.html', searchValues=query)
+    queryDict = { i : None for i in query } #format into dict format
+
+    print(queryDict)
+    return render_template('landingpage.html', searchValues=queryDict)
 
 
 # path to render the results page.  the searchQuery parameter is passed from the landing page.
 @app.route('/result/<searchQuery>')
 def diplayresult(searchQuery):
     print("placeholder2")
-    data = scrape_call(searchQuery)
-    return render_template('results.html',searchQuery=searchQuery,data=data)
+    data = db.returnQueryValues(searchQuery)
+    print(data)
+    return render_template('results2.html',searchQuery=searchQuery, data=data)
 
 # run flask app
 if __name__ == '__main__':
