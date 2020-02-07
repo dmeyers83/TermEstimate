@@ -16,6 +16,10 @@ class prototypeScrapper:
     job_company_list = []
 
     def __init__(self, q='Python Developer', l='New+York+State'):
+        self.page_data_list = []
+        self.allLinks = []
+        self.job_title_list = []
+        self.job_company_list = []
         self.run_indeed_query(q,l)
         self.write_lst(self.allLinks, "link_list.csv")
         return self.scrape_pages()

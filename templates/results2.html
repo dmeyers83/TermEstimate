@@ -12,14 +12,89 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import jquery-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <!--Import chart js-->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/dataTables.material.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.material.min.css">
+
+<script src="{{ url_for('static', filename='src/sigma.core.js') }}"></script>
+<script src="{{ url_for('static', filename='src/conrad.js') }}"></script>
+<script src="{{ url_for('static', filename='src/utils/sigma.utils.js') }}"></script>
+<script src="{{ url_for('static', filename='src/utils/sigma.polyfills.js') }}"></script>
+<script src="{{ url_for('static', filename='src/sigma.settings.js') }}"></script>
+<script src="{{ url_for('static', filename='src/classes/sigma.classes.dispatcher.js') }}"></script>
+<script src="{{ url_for('static', filename='src/classes/sigma.classes.configurable.js') }}"></script>
+<script src="{{ url_for('static', filename='src/classes/sigma.classes.graph.js') }}"></script>
+<script src="{{ url_for('static', filename='src/classes/sigma.classes.camera.js') }}"></script>
+<script src="{{ url_for('static', filename='src/classes/sigma.classes.quad.js') }}"></script>
+<script src="{{ url_for('static', filename='src/classes/sigma.classes.edgequad.js') }}"></script>
+<script src="{{ url_for('static', filename='src/captors/sigma.captors.mouse.js') }}"></script>
+<script src="{{ url_for('static', filename='src/captors/sigma.captors.touch.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/sigma.renderers.canvas.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/sigma.renderers.webgl.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/sigma.renderers.svg.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/sigma.renderers.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/webgl/sigma.webgl.nodes.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/webgl/sigma.webgl.nodes.fast.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/webgl/sigma.webgl.edges.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/webgl/sigma.webgl.edges.fast.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/webgl/sigma.webgl.edges.arrow.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.labels.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.hovers.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.nodes.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.edges.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.edges.curve.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.edges.arrow.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.edges.curvedArrow.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.edgehovers.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.edgehovers.curve.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.edgehovers.arrow.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/canvas/sigma.canvas.extremities.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/svg/sigma.svg.utils.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/svg/sigma.svg.nodes.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/svg/sigma.svg.edges.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/svg/sigma.svg.edges.curve.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/svg/sigma.svg.labels.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/renderers/svg/sigma.svg.hovers.def.js') }}"></script>
+<script src="{{ url_for('static', filename='src/middlewares/sigma.middlewares.rescale.js') }}"></script>
+<script src="{{ url_for('static', filename='src/middlewares/sigma.middlewares.copy.js') }}"></script>
+<script src="{{ url_for('static', filename='src/misc/sigma.misc.animation.js') }}"></script>
+<script src="{{ url_for('static', filename='src/misc/sigma.misc.bindEvents.js') }}"></script>
+<script src="{{ url_for('static', filename='src/misc/sigma.misc.bindDOMEvents.js') }}"></script>
+<script src="{{ url_for('static', filename='src/misc/sigma.misc.drawHovers.js') }}"></script>
+<!-- END SIGMA IMPORTS -->
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.parallelEdges/utils.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.parallelEdges/sigma.canvas.edges.curve.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.parallelEdges/sigma.canvas.edges.curvedArrow.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.parallelEdges/sigma.canvas.edgehovers.curve.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.parallelEdges/sigma.canvas.edgehovers.curvedArrow.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.edgeLabels/settings.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.def.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.curve.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.curvedArrow.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.curve.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.renderers.edgeLabels/sigma.canvas.edges.labels.curvedArrow.js') }}"></script>
+
+<script src="{{ url_for('static', filename='plugins/sigma.layout.forceAtlas2/supervisor.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sigma.layout.forceAtlas2/worker.js') }}"></script>
+
+
+
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+    #sigma-container {
+
+    max-width: 1000px;
+    height: 600px;
+    margin: auto;
+  </style>
+
   <script>
+
+
+
+
 
     $(document).ready(function () {
 
@@ -29,12 +104,6 @@
     data: data,
     pageLength: 20,
     order: [3,'desc']  ,
-    columnDefs: [
-        {
-          targets: [ 0, 1, 2 ],
-          className: 'mdl-data-table__cell--non-numeric'
-        }
-      ],
       columns: [
           { data: 'keyword' },
           { data: 'POS' },
@@ -42,6 +111,8 @@
           { data: 'keyword_count' }
       ]
   } );
+
+
 
 
 
@@ -69,7 +140,7 @@
           <h6 class="header col s12 light center ">Find out what words will help you earn more money</h6>
       </div>
       <div class="row center">
-     <table id="table_id" class="mdl-data-table" style="width:100%">
+     <table id="table_id" class="display" style="width:100%">
        <thead>
         <tr>
             <th>Keyword</th>
@@ -84,7 +155,40 @@
       </div>
 
       <br><br>
+    <div id="sigma-container"></div>
 
+        <script>
+                var nodes = {{ nodes| tojson }};
+    var edges = {{ edges| tojson }};
+
+    var s = new sigma(
+      {
+        renderer: {
+          container: document.getElementById('sigma-container'),
+          type: 'canvas'
+        },
+        settings: {
+            edgeLabelSize: 'fixed',
+            sideMargin: 1.75
+
+        }
+      }
+    );
+    // Then, let's add some data to display:
+
+    s.graph.read({
+      nodes: nodes,
+      edges: edges
+    });
+
+    // Finally, let's ask our sigma instance to refresh:
+    s.refresh();
+
+        // launch force-atlas for 5sec
+    s.startForceAtlas2();
+    window.setTimeout(function() {s.killForceAtlas2()}, 10000);
+
+        </script>
     </div>
   </div>
 

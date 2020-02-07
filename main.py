@@ -7,30 +7,82 @@ import json
 # initialize flask app
 app = Flask(__name__)
 from databaseConnection import dbConnection
-
+import random
 db = dbConnection()
 
-def save_file(object):
-    with open('text_save.txt', 'wb') as config_dictionary_file:
-        # Step 3
-        pickle.dump(object, config_dictionary_file)
+#https://visjs.github.io/vis-network/examples/static/jsfiddle.1e459ff7d7345694e4e5563fcf087a54980b2d41e612c02f7f5133da1c4da9f5.html
+def buildGraph(keywords):
+    #get 15 keywords
+    keywords_trim = keywords[:3]
+    graph = {}
 
-def read_file(filename):
-    with open(filename, 'rb') as config_dictionary_file:
-        config_dictionary = pickle.load(config_dictionary_file)
-        print(config_dictionary)
-        return(config_dictionary)
+    for word in keywords_trim:
+        returnQuery = db.returnQueryValues(word['keyword'],4)
+        print("return query start")
+        print(returnQuery)
+        for object in returnQuery:
+            if object['query'] in graph:
+                graph[object['query']].append(object['keyword'])
+            else:
+                graph[object['query']] = [object['keyword']]
+
+    print(graph)
+
+    # #Build Node List
+    # nodes = []
+    # edge_data = []
+    # count = 1
+    # for key,value in graph.items():
+    #     nodes.append({'id': count, 'label': key})
+    #     edge_data.append(value)
+    #     count +=1
+    #
+    # print ("print nodes")
+    # print (nodes)
+    #
+    #
+    # #Build Edge List
+    # edges = []
+    # for i in range(len(edge_data)):
+    #     for j in range(len(edge_data[i])):
+    #         for k in range(i, len(edge_data)):
+    #             if edge_data[i][j] in edge_data[k] and i!=k:
+    #                 edges.append({'from': i+1, 'to': k+1, 'label':edge_data[i][j]})
+
+    #Build Node List
+    nodes = []
+    edge_data = []
+    count = 1
+    for key,value in graph.items():
+        nodes.append( {'id': str(count), 'label':key,'x':random.uniform(0, 1), 'y':random.uniform(0, 1), 'size':50, 'color': '#008cc2' })
+        edge_data.append(value)
+        count +=1
+
+    print ("print nodes")
+    print (nodes)
 
 
-def scrape_call(searchQuery):
-    scrapper_object = prototypeScrapper(searchQuery)
-    print("#### page values ####")
-    print(scrapper_object.page_data_list)
-    print("#### json objects ####")
-    termEstimator_object = termEstimator(scrapper_object.page_data_list)
-    print(termEstimator_object.agg_data())
-    save_file(termEstimator_object.agg_data())
-    return (termEstimator_object.agg_data())
+    #Build Edge List
+    edges = []
+    countEdges = {}
+    for i in range(len(edge_data)): # loop t
+        for j in range(len(edge_data[i])):
+            for k in range(i, len(edge_data)):
+                if edge_data[i][j] in edge_data[k] and i!=k:
+                    key = str(i+1) + "_" + str(k+1)
+                    if key in countEdges:
+                        countEdges[key] +=1
+                    else:
+                        countEdges[key] =0
+                    edges.append({'id': str(i+1) + "_" + str(k+1)+ "_" + str(j+1),'label': edge_data[i][j], 'source': str(i+1), 'target': str(k+1), 'type': 'curvedArrow','count':countEdges[key]*20, 'size':10, 'color': '#282c34'})
+                    count +=1
+
+    print("print edges")
+    print(edges)
+    graph_objects ={"nodes":nodes,"edges": edges}
+
+    return graph_objects
+
 
 # Path to render the html to display the search page
 @app.route('/')
@@ -48,9 +100,10 @@ def displaySearch():
 @app.route('/result/<searchQuery>')
 def diplayresult(searchQuery):
     print("placeholder2")
-    data = db.returnQueryValues(searchQuery)
+    data = db.returnKeywordValues(searchQuery)
     print(data)
-    return render_template('results2.html',searchQuery=searchQuery, data=data)
+    graph = buildGraph(data)
+    return render_template('results2.html',searchQuery=searchQuery, data=data, nodes=graph['nodes'], edges=graph['edges'])
 
 # run flask app
 if __name__ == '__main__':

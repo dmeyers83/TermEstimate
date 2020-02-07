@@ -14,6 +14,7 @@ class termEstimator:
     df_all_count = pd.DataFrame()
 
     def __init__(self, page_data):
+        self.df = self.df.iloc[0:0]
         self.page_data = page_data
         self.term_data = self.extract_keywords(page_data)
         print("placeholder text")
@@ -111,17 +112,17 @@ class termEstimator:
 
         #split POS sections into indivual dataframes
 
-        df_noun = self.df.loc[(self.df['POS'] == "Noun")]
-        df_verb = self.df.loc[(self.df['POS'] == "Verb")]
-        df_adverb = self.df.loc[(self.df['POS'] == "Adverb")]
-        df_adjective = self.df.loc[(self.df['POS'] == "Adjective")]
-
-        #df_agg_count = df.groupby(['keyword','POS'])['Score'].agg({"keyword_count": "count", "score_sum": "sum"}).sort_values(['keyword_count'],ascending=False)
-
-        df_agg_count_noun = df_noun.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
-        df_agg_count_verb = df_verb.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
-        df_agg_count_adjective =df_adjective.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
-        df_agg_count_adverb = df_adverb.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
-
-        #return json object array for each set of terms by POS
-        return [df_agg_count_noun.to_json(orient='split'), df_agg_count_verb.to_json(orient='split'),df_agg_count_adjective.to_json(orient='split'), df_agg_count_adverb.to_json(orient='split') ]
+        # df_noun = self.df.loc[(self.df['POS'] == "Noun")]
+        # df_verb = self.df.loc[(self.df['POS'] == "Verb")]
+        # df_adverb = self.df.loc[(self.df['POS'] == "Adverb")]
+        # df_adjective = self.df.loc[(self.df['POS'] == "Adjective")]
+        #
+        # #df_agg_count = df.groupby(['keyword','POS'])['Score'].agg({"keyword_count": "count", "score_sum": "sum"}).sort_values(['keyword_count'],ascending=False)
+        #
+        # df_agg_count_noun = df_noun.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
+        # df_agg_count_verb = df_verb.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
+        # df_agg_count_adjective =df_adjective.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
+        # df_agg_count_adverb = df_adverb.groupby(['keyword'])['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'],ascending=False)[:20]
+        #
+        # #return json object array for each set of terms by POS
+        # return [df_agg_count_noun.to_json(orient='split'), df_agg_count_verb.to_json(orient='split'),df_agg_count_adjective.to_json(orient='split'), df_agg_count_adverb.to_json(orient='split') ]

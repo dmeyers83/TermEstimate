@@ -29,8 +29,14 @@ class dbConnection:
     def returnUniqueQueryValues(self):
         return self.nameCollection.distinct("query")
 
-    def returnQueryValues(self, query):
-        result = self.nameCollection.find({"query":query, "keyword_count" : {"$gte" : 10}},{"_id": 0, "time":0 })
+    def returnKeywordValues(self, query,limit_amount=100):
+        result = self.nameCollection.find({"query":query, "keyword_count" : {"$gte" : 3}},{"_id": 0, "time":0 }).sort("keyword_count", -1).limit(limit_amount)
+        list_result = list(result)
+        print (list_result)
+        return (list_result)
+
+    def returnQueryValues(self, keyword, limit_amount=5):
+        result = self.nameCollection.find({"keyword": keyword}, {"_id": 0, "time": 0}).sort("keyword_count", -1).limit(limit_amount)
         list_result = list(result)
         print (list_result)
         return (list_result)
