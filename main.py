@@ -13,7 +13,7 @@ db = dbConnection()
 #https://visjs.github.io/vis-network/examples/static/jsfiddle.1e459ff7d7345694e4e5563fcf087a54980b2d41e612c02f7f5133da1c4da9f5.html
 def buildGraph(keywords):
     #get 15 keywords
-    keywords_trim = keywords[:3]
+    keywords_trim = keywords[:7]
     graph = {}
 
     for word in keywords_trim:
@@ -102,8 +102,8 @@ def diplayresult(searchQuery):
     print("placeholder2")
     data = db.returnKeywordValues(searchQuery)
     print(data)
-    graph = buildGraph(data)
-    return render_template('results2.html',searchQuery=searchQuery, data=data, nodes=graph['nodes'], edges=graph['edges'])
+    graph = buildGraph(data["all"])
+    return render_template('results2.html',searchQuery=searchQuery, data=data["all"], verbs =data["verbs"], nouns = data["nouns"], adjectives = data["adjectives"],  nodes=graph['nodes'], edges=graph['edges'])
 
 # run flask app
 if __name__ == '__main__':

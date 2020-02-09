@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 #https://api.mongodb.com/python/current/tutorial.html
 from datetime import datetime
-
+import json
 class dbConnection:
     client = MongoClient()
     testhost = "localhost"
@@ -29,14 +29,25 @@ class dbConnection:
     def returnUniqueQueryValues(self):
         return self.nameCollection.distinct("query")
 
-    def returnKeywordValues(self, query,limit_amount=100):
-        result = self.nameCollection.find({"query":query, "keyword_count" : {"$gte" : 3}},{"_id": 0, "time":0 }).sort("keyword_count", -1).limit(limit_amount)
+    def returnKeywordValues(self, query,limit_amount=75):
+        result = self.nameCollection.find({"query":query, "keyword_count" : {"$gte" : 2}},{"_id": 0, "time":0 }).sort("keyword_count", -1).limit(limit_amount)
         list_result = list(result)
+        nouns = [x for x in list_result if x['POS'] == 'Noun'][:5]
+        print("nouns")
+        print(nouns)
+        verbs = [x for x in list_result if x['POS'] == 'Verb'][:5]
+        print("verbs")
+        print(verbs)
+        adjectives = [x for x in list_result if x['POS'] == 'Adjective'][:5]
+        print("adjectives")
+        print(adjectives)
         print (list_result)
-        return (list_result)
+        return ({"all":list_result,"nouns":nouns,"verbs":verbs,"adjectives":adjectives})
 
     def returnQueryValues(self, keyword, limit_amount=5):
         result = self.nameCollection.find({"keyword": keyword}, {"_id": 0, "time": 0}).sort("keyword_count", -1).limit(limit_amount)
         list_result = list(result)
+
+
         print (list_result)
         return (list_result)

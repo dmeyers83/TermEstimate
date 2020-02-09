@@ -14,7 +14,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-
+<link rel="icon" href="{{ url_for('static', filename='moneywordlogo.png') }}">
 <script src="{{ url_for('static', filename='src/sigma.core.js') }}"></script>
 <script src="{{ url_for('static', filename='src/conrad.js') }}"></script>
 <script src="{{ url_for('static', filename='src/utils/sigma.utils.js') }}"></script>
@@ -85,9 +85,15 @@
     }
     #sigma-container {
 
-    max-width: 1000px;
-    height: 600px;
-    margin: auto;
+        max-width: 1000px;
+        height: 600px;
+        margin: auto;
+    }
+    .dataTables_filter {
+        float: left !important;
+    }
+    .dataTables_filter input { width: 100px }
+
   </style>
 
   <script>
@@ -102,14 +108,21 @@
     console.log(data);
     $('#table_id').DataTable( {
     data: data,
-    pageLength: 20,
+    lengthChange: false,
+     searching: false,
+    language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search Results"
+    },
+    pageLength: 15,
     order: [3,'desc']  ,
       columns: [
           { data: 'keyword' },
           { data: 'POS' },
           { data: 'query' },
           { data: 'keyword_count' }
-      ]
+      ],
+
   } );
 
 
@@ -139,7 +152,64 @@
           <img src="{{url_for('static', filename='moneyword.png')}}" alt="logo">
           <h6 class="header col s12 light center ">Find out what words will help you earn more money</h6>
       </div>
-      <div class="row center">
+
+    <div class="row grey lighten-3" center>
+        <div class ="col s4">
+            <h5>Top Nouns</h5>
+        </div>
+        <div class ="col s4">
+            <h5>Top Adjectives</h5>
+        </div>
+        <div class ="col s4">
+            <h5>Top Verbs</h5>
+        </div>
+
+        <div class="col s2">
+            {% for n in range(nouns|length)%}
+                {{nouns[n]["keyword"]}} <br>
+            {% endfor %}
+        </div>
+        <div class="col s2">
+            {% for n in range(nouns|length)%}
+                {% for c in range(nouns[n]["keyword_count"]) %}
+                    <i class="material-icons tiny green">attach_money</i>
+                {% endfor %}<br>
+             {% endfor %}
+            <br>
+        </div>
+        <div class="col s2">
+            {% for n in range(adjectives|length)%}
+                {{adjectives[n]["keyword"]}} <br>
+            {% endfor %}
+
+        </div>
+        <div class="col s2">
+            {% for n in range(adjectives|length)%}
+                {% for c in range(adjectives[n]["keyword_count"]) %}
+                    <i class="material-icons tiny green">attach_money</i>
+                {% endfor %}<br>
+            {% endfor %}
+        <br>
+
+        </div>
+        <div class="col s2">
+            {% for n in range(verbs|length)%}
+                {{verbs[n]["keyword"]}} <br>
+            {% endfor %}
+        </div>
+        <div class="col s2">
+            {% for n in range(verbs|length)%}
+                {% for c in range(verbs[n]["keyword_count"]) %}
+                    <i class="material-icons tiny green">attach_money</i>
+                {% endfor %}<br>
+            {% endfor %}
+        <br>
+        </div>
+    <br>
+    </div>
+
+      <div class="row ">
+     <h5>Detailed Results</h5>
      <table id="table_id" class="display" style="width:100%">
        <thead>
         <tr>
@@ -193,13 +263,7 @@
   </div>
 
 
-  <div class="container">
-    <div class="section">
 
-
-    </div>
-    <br><br>
-  </div>
 
   <footer class="page-footer grey ">
     <div class="container">
