@@ -54,7 +54,7 @@ def buildGraph(keywords):
     edge_data = []
     count = 1
     for key,value in graph.items():
-        nodes.append( {'id': str(count), 'label':key,'x':random.uniform(0, 1), 'y':random.uniform(0, 1), 'size':50, 'color': '#008cc2' })
+        nodes.append( {'id': str(count), 'label':key,'x':random.uniform(0, 1), 'y':random.uniform(0, 1), 'size':50, 'color': '#969696' })
         edge_data.append(value)
         count +=1
 
@@ -74,7 +74,7 @@ def buildGraph(keywords):
                         countEdges[key] +=1
                     else:
                         countEdges[key] =0
-                    edges.append({'id': str(i+1) + "_" + str(k+1)+ "_" + str(j+1),'label': edge_data[i][j], 'source': str(i+1), 'target': str(k+1), 'type': 'curvedArrow','count':countEdges[key]*20, 'size':10, 'color': '#282c34'})
+                    edges.append({'id': str(i+1) + "_" + str(k+1)+ "_" + str(j+1),'label': edge_data[i][j], 'source': str(i+1), 'target': str(k+1), 'type': 'curvedArrow','count':countEdges[key]*20, 'size':10, 'color': '#00b100'})
                     count +=1
 
     print("print edges")
