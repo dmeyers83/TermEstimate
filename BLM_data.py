@@ -19,12 +19,12 @@ def scrape_call(searchQuery):
     print(termEstimator_object.df.head())
     return termEstimator_object.df
 
-df_BLS = pd.read_csv(r"C:\Users\doug\TermEstimate\BLS_Computer.csv")
+#df_BLS = pd.read_csv(r"C:\Users\doug\TermEstimate\BLS_Computer.csv")
 
 #roles = df_BLS.OCC_TITLE.unique()
 #roles = ["Technology Project Manager","Technology Product Manager","Data Scientist", "DevOps Engineer","Software Engineer","Data Engineer","Solutions Architect","Data Analyst","Full Stack Developer","Development Manager","CTO","CIO","Security Engineer","Mobile Application Developer","Senior Web Developer","Cloud Solutions Architect", "Information Technology Manager","Applications Architect","Big data engineer","Information systems security manager","Data security analyst"]
-#roles = ["IT Project Manager", "Data Scientist", "Python Developer"]
-roles = ["Marketing Manager", "Brand Manager", "Digital Marketing Manager"]
+roles = ["IT Project Manager"]
+#roles = ["Marketing Manager", "Brand Manager", "Digital Marketing Manager"]
 df_granular = pd.DataFrame()
 df_summary = pd.DataFrame()
 df_2 = pd.DataFrame()
@@ -40,8 +40,8 @@ for job in roles:
     db.insertData(data)
     print("done appending")
 
-    df_granular.to_csv('Marketing_Keywords_granular.csv')
-    df_summary.to_csv('Marketing_Keywords_summary.csv')
+    df_granular.to_csv('PM_Keywords_granular.csv')
+    df_summary.to_csv('PM_Keywords_summary.csv')
 
 # print("print final")
 # df_final.to_csv('IT2_Keywords_granular.csv')

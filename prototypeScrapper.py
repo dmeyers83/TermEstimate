@@ -14,12 +14,15 @@ class prototypeScrapper:
     page_data_list = []  # list of all docuemnts
     job_title_list = []
     job_company_list = []
+    index = [0]
+    full_result = []
 
     def __init__(self, q='Python Developer', l='New+York+State'):
         self.page_data_list = []
         self.allLinks = []
         self.job_title_list = []
         self.job_company_list = []
+        full_result = []
         self.run_indeed_query(q,l)
         self.write_lst(self.allLinks, "link_list.csv")
         return self.scrape_pages()
@@ -70,6 +73,7 @@ class prototypeScrapper:
             if rel_link != '':
                 indeed_links.append('https://www.indeed.com' + rel_link)
                 self.job_title_list.append((rel_title))
+                self.index.append(self.index[-1]+1)
 
         for company_holder in soup.find_all('span', class_='company'):  # get list of all <div> of class 'photo nocaption'
             rel_company = company_holder.getText()  # get url
@@ -128,3 +132,8 @@ class prototypeScrapper:
 
             page_data = remove_stopwords(page_data)
             self.page_data_list.append(page_data)
+
+        self.index.pop(0)#remove 0 index value
+        self.full_result.extend(list(zip(self.index, self.job_company_list, self.allLinks, self.job_title_list, self.page_data_list)))
+        print("##full result###")
+        print (self.full_result)
