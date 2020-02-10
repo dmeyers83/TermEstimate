@@ -22,22 +22,26 @@ def scrape_call(searchQuery):
 df_BLS = pd.read_csv(r"C:\Users\doug\TermEstimate\BLS_Computer.csv")
 
 #roles = df_BLS.OCC_TITLE.unique()
-roles = ["Technology Project Manager","Technology Product Manager","Data Scientist", "DevOps Engineer","Software Engineer","Data Engineer","Solutions Architect","Data Analyst","Full Stack Developer","Development Manager","CTO","CIO","Security Engineer","Mobile Application Developer","Senior Web Developer","Cloud Solutions Architect", "Information Technology Manager","Applications Architect","Big data engineer","Information systems security manager","Data security analyst"]
+#roles = ["Technology Project Manager","Technology Product Manager","Data Scientist", "DevOps Engineer","Software Engineer","Data Engineer","Solutions Architect","Data Analyst","Full Stack Developer","Development Manager","CTO","CIO","Security Engineer","Mobile Application Developer","Senior Web Developer","Cloud Solutions Architect", "Information Technology Manager","Applications Architect","Big data engineer","Information systems security manager","Data security analyst"]
 #roles = ["IT Project Manager", "Data Scientist", "Python Developer"]
-df_final = pd.DataFrame()
+roles = ["Marketing Manager", "Brand Manager", "Digital Marketing Manager"]
+df_granular = pd.DataFrame()
+df_summary = pd.DataFrame()
 df_2 = pd.DataFrame()
 for job in roles:
     df_2 = df_2.iloc[0:0]
     df_2 = scrape_call(job)
     df_2['query'] = job
     df_2['time'] = datetime.now()
-    df_2.to_csv('IT2_Keywords_summary.csv')
+    df_granular = df_granular.append(df_2)
     df_2 = df_2.groupby(['keyword', 'POS', 'time', 'query'], as_index=False)['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'], ascending=False)
-    df_2.to_csv('IT2_Keywords_summary.csv')
+    df_summary= df_summary.append(df_2)
     data =  df_2.to_dict(orient='records')  # Here's our added param..
     db.insertData(data)
-    #df_final = df_final.append(df_2)
     print("done appending")
+
+    df_granular.to_csv('Marketing_Keywords_granular.csv')
+    df_summary.to_csv('Marketing_Keywords_summary.csv')
 
 # print("print final")
 # df_final.to_csv('IT2_Keywords_granular.csv')
