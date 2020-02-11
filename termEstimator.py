@@ -12,10 +12,12 @@ class termEstimator:
     term_data = []
     df = pd.DataFrame()
     df_all_count = pd.DataFrame()
+    all_data = []
 
-    def __init__(self, page_data):
+    def __init__(self, page_data, all_data):
         self.df = self.df.iloc[0:0]
         self.page_data = page_data
+        self.all_data = all_data
         self.term_data = self.extract_keywords(page_data)
         print("placeholder text")
 
@@ -74,12 +76,12 @@ class termEstimator:
 
         term_list = [] # list of top terms for a given document
 
-        for item in self.page_data:
+        for item in self.all_data:
             # you only needs to do this once, this is a mapping of index to
             feature_names = cv.get_feature_names()
 
             # get the document that we want to extract keywords from
-            doc = item
+            doc = item[4]
 
             # generate tf-idf for the given document
             tf_idf_vector = tfidf_transformer.transform(cv.transform([doc]))
@@ -97,14 +99,14 @@ class termEstimator:
             list_item = []
             for k in keywords:
                 tagged = nltk.pos_tag(nltk.word_tokenize(k))
-                term_list.append([k, keywords[k], str(tagged[0][1])])
+                term_list.append([k, keywords[k], str(tagged[0][1]),item[0],item[1],item[3]])
                 print(k, keywords[k])
 
         return term_list
 
     def agg_data(self):
         term_list= self.term_data
-        self.df = pd.DataFrame(term_list, columns=["keyword", "Score", "POS"]) # Initialize Dataframe
+        self.df = pd.DataFrame(term_list, columns=["keyword", "Score", "POS","job_ID", "Company","Title"]) # Initialize Dataframe
 
         #map to higher level POS
         self.df['POS'] = self.df['POS'].map({'NN': 'Noun', 'NNS': 'Noun','NNP ': 'Noun Proper','NNPS': 'Noun Proper','VB': 'Verb','VBD': 'Verb','VBG': 'Verb','VBN': 'Verb','VBP': 'Verb','VBZ': 'Verb',

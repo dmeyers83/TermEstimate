@@ -76,7 +76,7 @@ class prototypeScrapper:
                 self.index.append(self.index[-1]+1)
 
         for company_holder in soup.find_all('span', class_='company'):  # get list of all <div> of class 'photo nocaption'
-            rel_company = company_holder.getText()  # get url
+            rel_company = company_holder.get_text(strip=True)  # get url
             # url returned is relative, so we need to add base url
             if rel_company != '':
                 self.job_company_list.append((rel_company))
