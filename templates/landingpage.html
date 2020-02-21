@@ -12,10 +12,12 @@
     <!--Import jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <link rel="icon" href="{{ url_for('static', filename='moneywordlogo.png') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
     <script>
 
         var searchValues = {{ searchValues| tojson }};
+        console.log("List of Search Values");
+        var queryValueArray = Object.keys(searchValues);
 
         document.addEventListener('DOMContentLoaded', function() {
           var elems = document.querySelectorAll('.autocomplete');
@@ -33,13 +35,13 @@
             $(".searchbutton").click(function() {
                 queryText = $(".querytext").val();
                 resultsURL = "/result/" + queryText;
-                if (queryText.trim() != "") {
+                if (queryText.trim() != ""  && queryValueArray.indexOf(queryText.trim())!== -1 ) {
                     $( ".mainbody" ).hide();
                     $( ".loader" ).show();
                     window.location.href = resultsURL;
                 }
                 else{
-                    alert("You must enter a search term")
+                    alert("You must enter a search term thats valid in the dropdown")
                 }
 
             });

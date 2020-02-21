@@ -103,7 +103,7 @@ def diplayresult(searchQuery):
     data = db.returnKeywordValues(searchQuery)
     print(data)
     graph = buildGraph(data["all"])
-    return render_template('results2.html',searchQuery=searchQuery, data=data["all"], verbs =data["verbs"], nouns = data["nouns"], adjectives = data["adjectives"],  nodes=graph['nodes'], edges=graph['edges'])
+    return render_template('results2.html',searchQuery=searchQuery, data=data["all"], verbs =data["verbs"], nouns = data["nouns"], adjectives = data["adjectives"], adverbs = data["adverbs"],   nodes=graph['nodes'], edges=graph['edges'])
 
 # run flask app
 if __name__ == '__main__':

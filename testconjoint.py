@@ -1,16 +1,15 @@
 
 
 
-from keywordValue import keywordValue
 import pandas as pd
 
-conjointKeywords = keywordValue()
-conjointKeywords.setJobSalary("Technology Project Manager")
-conjointKeywords.filterTopKeywords()
-conjointKeywords.conjointDataPrep()
-conjointKeywords.runConjoint()
+roles = ["IT Project Manager","Technology Product Manager","Data Scientist", "DevOps Engineer","Software Engineer","Data Engineer","Solutions Architect","Data Analyst","Full Stack Developer","Development Manager","CTO","CIO","Security Engineer","Mobile Application Developer","Senior Web Developer","Cloud Solutions Architect", "Information Technology Manager","Applications Architect","Big data engineer","Information systems security manager","Data security analyst"]
 
-keyword_summary_df = pd.read_csv('PM_Keywords_summary.csv')  # test data
+salary_df = pd.read_csv('job_avg_salaries.csv') #avg salary per job
+salary_df_list = salary_df['Job_Tittle'].to_list()
 
-df_merge_col = pd.merge(keyword_summary_df, conjointKeywords.df_final, on='keyword')
-print(df_merge_col)
+for job in roles:
+    if job in salary_df_list:
+        print("yes " +job)
+    else:
+        print("no " + job)

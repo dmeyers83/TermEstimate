@@ -33,13 +33,13 @@ class keywordValue:
         self.df2 = pd.DataFrame()  # feature matrix holding dataframe
         self.feature_matrix = pd.DataFrame()  # feature matrix for conjoint analysis
         self.num_keywords = 50  # number of keywords
-        self.df_final = pd.dataFrame()
+        df_final = pd.DataFrame()
 
     #set job salary
     def setJobSalary(self, job_role):
         try:
             self.avg_salary = int(self.salary_df[self.salary_df['Job_Tittle'] == job_role].iloc[0]['Avg_Salary'])
-        except IndexError: # return 0 if not found
+        except: # return 0 if not found
             self.avg_salary = 0
 
     # filter list to the top x keywords

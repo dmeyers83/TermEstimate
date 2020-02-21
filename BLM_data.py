@@ -24,13 +24,13 @@ def scrape_call(searchQuery):
 #df_BLS = pd.read_csv(r"C:\Users\doug\TermEstimate\BLS_Computer.csv")
 
 #roles = df_BLS.OCC_TITLE.unique()
-roles = ["Technology Project Manager","Technology Product Manager","Data Scientist", "DevOps Engineer","Software Engineer","Data Engineer","Solutions Architect","Data Analyst","Full Stack Developer","Development Manager","CTO","CIO","Security Engineer","Mobile Application Developer","Senior Web Developer","Cloud Solutions Architect", "Information Technology Manager","Applications Architect","Big data engineer","Information systems security manager","Data security analyst"]
+roles = ["IT Project Manager","Technology Product Manager","Data Scientist", "DevOps Engineer","Software Engineer","Data Engineer","Solutions Architect","Data Analyst","Full Stack Developer","Development Manager","CTO","CIO","Security Engineer","Mobile Application Developer","Senior Web Developer","Cloud Solutions Architect", "Information Technology Manager","Applications Architect","Big data engineer","Information systems security manager","Data security analyst"]
 
 #roles = ["Marketing Manager", "Brand Manager", "Digital Marketing Manager"]
-#domain = "Information_Technology"
+domain = "Information_Technology"
 
-roles = ["IT Project Manager"]
-domain = "Project_Manager"
+#roles = ["IT Project Manager"]
+#domain = "Project_Manager"
 
 df_granular = pd.DataFrame()
 df_summary = pd.DataFrame()
@@ -46,20 +46,22 @@ for job in roles:
     df_summary= df_summary.append(df_2_summary)
 
     #conjoint analysis
-    conjointKeywords = keywordValue(df_granular,df_summary)
+    conjointKeywords = keywordValue(df_2,df_2_summary)
     conjointKeywords.setJobSalary(job)
     conjointKeywords.filterTopKeywords()
     conjointKeywords.conjointDataPrep()
     conjointKeywords.runConjoint()
-    df_merge_col = pd.merge(df_summary, conjointKeywords.df_final, on='keyword')
+    df_merge_col = pd.merge(df_2_summary, conjointKeywords.df_final, on='keyword')
 
     data =  df_merge_col.to_dict(orient='records')  # Here's our added param..
     db.insertData(data)
     print("done appending")
+    conjointKeywords.clear()
 
-    df_granular.to_csv(domain + 'Keywords_granular.csv')
-    df_summary.to_csv(domain + 'Keywords_summary.csv')
+df_granular.to_csv(domain + 'Keywords_granular.csv')
+df_summary.to_csv(domain + 'Keywords_summary.csv')
 
+print("done with full script")
 # print("print final")
 # df_final.to_csv('IT2_Keywords_granular.csv')
 # df_final.head()

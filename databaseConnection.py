@@ -30,19 +30,22 @@ class dbConnection:
         return self.nameCollection.distinct("query")
 
     def returnKeywordValues(self, query,limit_amount=75):
+        return_amount =3
+
         result = self.nameCollection.find({"query":query, "keyword_count" : {"$gte" : 2}},{"_id": 0, "time":0 }).sort("keyword_count", -1).limit(limit_amount)
         list_result = list(result)
-        nouns = [x for x in list_result if x['POS'] == 'Noun'][:5]
+        nouns = [x for x in list_result if x['POS'] == 'Noun'][: return_amount]
         print("nouns")
         print(nouns)
-        verbs = [x for x in list_result if x['POS'] == 'Verb'][:5]
+        verbs = [x for x in list_result if x['POS'] == 'Verb'][: return_amount]
         print("verbs")
         print(verbs)
-        adjectives = [x for x in list_result if x['POS'] == 'Adjective'][:5]
+        adjectives = [x for x in list_result if x['POS'] == 'Adjective'][: return_amount]
         print("adjectives")
         print(adjectives)
+        adverbs = [x for x in list_result if x['POS'] == 'Adverb'][: return_amount]
         print (list_result)
-        return ({"all":list_result,"nouns":nouns,"verbs":verbs,"adjectives":adjectives})
+        return ({"all":list_result,"nouns":nouns,"verbs":verbs,"adjectives":adjectives, "adverbs":adverbs})
 
     def returnQueryValues(self, keyword, limit_amount=5):
         result = self.nameCollection.find({"keyword": keyword}, {"_id": 0, "time": 0}).sort("keyword_count", -1).limit(limit_amount)
