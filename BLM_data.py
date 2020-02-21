@@ -4,6 +4,7 @@ from prototypeScrapper import prototypeScrapper
 from termEstimator import termEstimator
 from databaseConnection import dbConnection
 import pandas as pd
+from keywordValue import keywordValue
 from datetime import datetime
 
 db = dbConnection()
@@ -24,9 +25,12 @@ def scrape_call(searchQuery):
 
 #roles = df_BLS.OCC_TITLE.unique()
 roles = ["Technology Project Manager","Technology Product Manager","Data Scientist", "DevOps Engineer","Software Engineer","Data Engineer","Solutions Architect","Data Analyst","Full Stack Developer","Development Manager","CTO","CIO","Security Engineer","Mobile Application Developer","Senior Web Developer","Cloud Solutions Architect", "Information Technology Manager","Applications Architect","Big data engineer","Information systems security manager","Data security analyst"]
-#roles = ["IT Project Manager"]
+
 #roles = ["Marketing Manager", "Brand Manager", "Digital Marketing Manager"]
-domain = "Information_Technology"
+#domain = "Information_Technology"
+
+roles = ["IT Project Manager"]
+domain = "Project_Manager"
 
 df_granular = pd.DataFrame()
 df_summary = pd.DataFrame()
@@ -40,12 +44,21 @@ for job in roles:
     df_granular = df_granular.append(df_2)
     df_2_summary = df_2.groupby(['keyword', 'POS', 'time', 'query','domain'], as_index=False)['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'], ascending=False)
     df_summary= df_summary.append(df_2_summary)
-    data =  df_summary.to_dict(orient='records')  # Here's our added param..
+
+    #conjoint analysis
+    conjointKeywords = keywordValue(df_granular,df_summary)
+    conjointKeywords.setJobSalary(job)
+    conjointKeywords.filterTopKeywords()
+    conjointKeywords.conjointDataPrep()
+    conjointKeywords.runConjoint()
+    df_merge_col = pd.merge(df_summary, conjointKeywords.df_final, on='keyword')
+
+    data =  df_merge_col.to_dict(orient='records')  # Here's our added param..
     db.insertData(data)
     print("done appending")
 
-    df_granular.to_csv('IT_Keywords_granular.csv')
-    df_summary.to_csv('IT_Keywords_summary.csv')
+    df_granular.to_csv(domain + 'Keywords_granular.csv')
+    df_summary.to_csv(domain + 'Keywords_summary.csv')
 
 # print("print final")
 # df_final.to_csv('IT2_Keywords_granular.csv')
