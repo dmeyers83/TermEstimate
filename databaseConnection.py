@@ -45,7 +45,10 @@ class dbConnection:
         print(adjectives)
         adverbs = [x for x in list_result if x['POS'] == 'Adverb'][: return_amount]
         print (list_result)
-        return ({"all":list_result,"nouns":nouns,"verbs":verbs,"adjectives":adjectives, "adverbs":adverbs})
+        topNum = list_result[0]['keyword_count']
+        print("Top keyword count")
+        print(topNum)
+        return ({"all":list_result,"nouns":nouns,"verbs":verbs,"adjectives":adjectives, "adverbs":adverbs,"high_keyword":topNum})
 
     def returnQueryValues(self, keyword, limit_amount=5):
         result = self.nameCollection.find({"keyword": keyword}, {"_id": 0, "time": 0}).sort("keyword_count", -1).limit(limit_amount)

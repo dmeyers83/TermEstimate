@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
      <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -10,9 +12,21 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import jquery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
   <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+      <style type="text/css">
+        .carousel {
+        min-height: 325px;
+        }
+        .gborder {
+
+        border-radius: 15px;
+
+    }
+
+
+  </style>
     <script>
 
         var searchValues = {{ searchValues| tojson }};
@@ -27,8 +41,25 @@
         });
 
 
+
+
+
         $(document).ready(function() {
             $( ".loader" ).hide();
+            $('.carousel').carousel();
+         $('.carousel.carousel-slider').carousel({
+            fullWidth: true,
+            indicators: true
+            });
+            autoplay();
+            function autoplay() {
+                $('.carousel').carousel('next');
+                setTimeout(autoplay, 7000);
+            }
+
+
+
+
             <!-- Redirect to python route to display results passing the query in the URL-->
 
 
@@ -53,6 +84,17 @@
 
 
     <title>MoneyWord - Find out what words will help you earn more money </title>
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-159357780-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-159357780-1');
+</script>
 </head>
 <body>
 
@@ -65,7 +107,7 @@
       <br><br>
 
     <div class="row center">
-          <img src="{{url_for('static', filename='moneyword.png')}}" alt="logo"><h8 class="red-text">Beta</h8><br>
+          <a href="https://www.moneyword.io"><img src="{{url_for('static', filename='moneyword.png')}}" alt="logo"><h8 class="red-text">Beta</h8></a><br>
           <h6 class="header col s12 light center ">Find out what words will help you earn more money</h6>
       </div>
       <div class="row center">
@@ -104,49 +146,57 @@
       </div>
     </div>
   </div><br>
-<h6>Scrapping Indeed jobs and running Topic models may take several minutes!</h6>
+<h6>Please wait while we load your data</h6>
 </div>
-
+<div class="row  grey lighten-2">
   <div class="container">
-    <div class="section">
 
+  <div class="carousel carousel-slider ">
+         <div class="carousel-item " href="#three!">
+           <h6 class="black-text "><i class="material-icons small">blur_on</i>Explore your career path by learning how different words/skills connect to other jobs  </h6>
+      <img class="gborder " src="{{url_for('static', filename='graphresize.png')}}" alt="logo"><Br><Br>
 
     </div>
-    <br><br>
-  </div>
+    <div class="carousel-item  " href="#one!">
+        <h6 class="black-text"><i class="material-icons small">trending_up</i> Analyze the top words and how much they are worth </h6>
+      <img class="gborder " src="{{url_for('static', filename='Topkeywords5.PNG')}}" alt="logo"><br>
+    </div>
 
+
+    <div class="carousel-item " href="#two!">
+        <h6 class="black-text"><i class="material-icons small">dvr</i> Analyze the top 50 words </h6>
+      <img class="gborder " src="{{url_for('static', filename='detailedscoreresize.PNG')}}" alt="logo">
+    </div>
+
+
+  </div>
+</div>
+
+
+
+  </div>
+<br><br>
   <footer class="page-footer grey ">
     <div class="container">
       <div class="row">
-        <div class="col l6 s12">
+        <div class="col l9 s12">
           <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">Just a couple of guys trying to make their first million (or 2)</p>
+          <p class="grey-text text-lighten-4">Large companies like Google, Microsoft and Facebook deploy cutting edge machine learning and statistical methods to make better products and increase their profit.  Now the same techniques are available to help you select the most relevant words on your resume and earn more money! </p>
 
 
         </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
+
         <div class="col l3 s12">
           <h5 class="white-text">Connect</h5>
           <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
+            <li><a class="white-text darken-4" href="https://docs.google.com/forms/d/e/1FAIpQLSdEYUo-uJ1RXnSmFzYTBpOTzZBFyr1ZNpbl6lMkGznTbfYU2g/viewform">  <i class="material-icons tiny">email</i>  Contact or Feedback</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="orange-text text-lighten-3">Doug Meyers</a>
+      Made by <a class="green-text text-lighten-3">Doug Meyers</a>
       </div>
     </div>
   </footer>

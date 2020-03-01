@@ -76,7 +76,7 @@
 
 <script src="{{ url_for('static', filename='plugins/sigma.layout.forceAtlas2/supervisor.js') }}"></script>
 <script src="{{ url_for('static', filename='plugins/sigma.layout.forceAtlas2/worker.js') }}"></script>
-
+<script src="{{ url_for('static', filename='plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js') }}"></script>
 
 
   <style type="text/css">
@@ -85,7 +85,7 @@
     }
     #sigma-container {
 
-        max-width: 1000px;
+        max-width: 1200px;
         height: 600px;
         margin: auto;
     }
@@ -99,7 +99,7 @@
     }
     .whiteborder {
         border-color:white;
-        border-width: 1px; /* this allows you to adjust the thickness */
+        border-width: 2px; /* this allows you to adjust the thickness */
         border-style: solid;
     }
 
@@ -113,26 +113,28 @@
 
 
     $(document).ready(function () {
+        //$('.tooltipped').tooltip();
+        var data = {{ data | tojson }};
+        var high_keyword = {{high_keyword}}
 
-    var data = {{ data | tojson }};
-    console.log(data);
-    $('#table_id').DataTable( {
-    data: data,
-    lengthChange: false,
-     searching: false,
-    language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Search Results"
-    },
-    pageLength: 15,
-    order: [3,'desc']  ,
-      columns: [
-          { data: 'keyword' },
-          { data: 'POS' },
-          { data: 'query' },
-          { data: 'wordValue', render: $.fn.dataTable.render.number(',', '.', 0, '$')  },
-          { data: 'keyword_count' }
-      ],
+        console.log(data);
+        $('#table_id').DataTable( {
+        data: data,
+        lengthChange: false,
+         searching: false,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search Results"
+        },
+        pageLength: 15,
+        order: [3,'desc']  ,
+          columns: [
+              { data: 'keyword' },
+              { data: 'POS' },
+              { data: 'query' },
+              { data: 'wordValue', render: $.fn.dataTable.render.number(',', '.', 0, '$')  },
+              { data: 'keyword_count' }
+          ],
 
   } );
 
@@ -149,6 +151,16 @@
 
 
   <title>{{searchQuery}}</title>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-159357780-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-159357780-1');
+</script>
 </head>
 
 <body>
@@ -160,85 +172,101 @@
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
           <div class="row center">
-          <img src="{{url_for('static', filename='moneyword.png')}}" alt="logo"><h8 class="red-text">Beta</h8><br>
+          <a href="https://www.moneyword.io"><img src="{{url_for('static', filename='moneyword.png')}}" alt="logo"><h8 class="red-text">Beta</h8></a><br>
           <h6 class="header col s12 light center ">Find out what words will help you earn more money</h6>
       </div>
-    <h6>Top Keywords for {{searchQuery}}</h6>
-   <div class="row grey lighten-3" center>
+    <h6>Top Keywords for {{searchQuery}} </h6>
 
-        <div class ="col s6">
-            <h6>Top Nouns</h6>
-        </div>
-        <div class ="col s6">
-            <h6>Top Adjectives</h6>
+
+        <div class="row " center>
+             <div class ="col s6 grey lighten-3 whiteborder ">
+                 <div class="row ">
+                    <div class ="col s12">
+                        <h6>Top Nouns</h6>
+                    </div>
+
+                     <div class="col s6">
+                        {% for n in range(nouns|length)%}
+                        <span class=" smalltextsize">{{nouns[n]["keyword"]}}</span> <b><span class="green-text smalltextsize"> {{ "${:,.0f}".format(nouns[n]["wordValue"]) }}</span></b> <br>
+                        {% endfor %}
+                    </div>
+                    <div class="col s6">
+                        {% for n in range(nouns|length)%}
+                            {% for c in range( returnNormalizedCount(nouns[n]["keyword_count"], high_keyword) ) %}
+                                <i class="material-icons tiny green">attach_money</i>
+                            {% endfor %}<br>
+                         {% endfor %}
+
+                    </div>
+                 </div>
+             </div>
+
+             <div class ="col s6 grey lighten-3  whiteborder">
+                <div class="row ">
+                    <div class ="col s12">
+                        <h6>Top Adjectives</h6>
+                    </div>
+
+                   <div class ="col s6">
+                       {% for n in range(adjectives|length)%}
+                            <span class=" smalltextsize">{{adjectives[n]["keyword"]}}</span> <b><span class="green-text smalltextsize"> {{ "${:,.0f}".format(adjectives[n]["wordValue"]) }}</span></b> <br>
+                        {% endfor %}
+                    </div>
+                   <div class ="col s6">
+                       {% for n in range(adjectives|length)%}
+                            {% for c in range( returnNormalizedCount(adjectives[n]["keyword_count"], high_keyword) ) %}
+                                <i class="material-icons tiny green">attach_money</i>
+                        {% endfor %}<br>
+                    {% endfor %}
+                    </div>
+                 </div>
+             </div>
+            <div class ="col s6 grey lighten-3 whiteborder">
+                <div class="row ">
+                    <div class ="col s12">
+                        <h6>Top Verbs</h6>
+                    </div>
+
+                    <div class="col s6 ">
+                        {% for n in range(verbs|length)%}
+                        <span class=" smalltextsize"> {{verbs[n]["keyword"]}}</span> <b><span class="green-text smalltextsize"> {{ "${:,.0f}".format(verbs[n]["wordValue"]) }}</span></b> <br>
+                        {% endfor %}
+                    </div>
+                    <div class="col s6 ">
+                        {% for n in range(verbs|length)%}
+                            {% for c in range(returnNormalizedCount(verbs[n]["keyword_count"], high_keyword) ) %}
+                                <i class="material-icons tiny green">attach_money</i>
+                            {% endfor %}<br>
+                         {% endfor %}
+
+                    </div>
+                 </div>
+             </div>
+            <div class ="col s6 grey lighten-3 whiteborder ">
+                <div class="row ">
+                    <div class="col s12 ">
+                         <h6>Top Adverbs</h6>
+                    </div>
+
+                    <div class="col s6 ">
+                        {% for n in range(adverbs|length)%}
+                            <span class=" smalltextsize"> {{adverbs[n]["keyword"]}}</span><b> <span class="green-text smalltextsize">  {{ "${:,.2f}".format(adverbs[n]["wordValue"]) }}</span></b>
+                        {% endfor %}
+
+                    </div>
+                    <div class="col s6  ">
+                        {% for n in range(adverbs|length)%}
+                            {% for c in range(returnNormalizedCount(adverbs[n]["keyword_count"], high_keyword) ) %}
+                                <i class="material-icons tiny green">attach_money</i>
+                            {% endfor %}<br>
+                        {% endfor %}
+
+
+                    </div>
+                 </div>
+             </div>
         </div>
 
-        <div class="col s3">
-            {% for n in range(nouns|length)%}
-            <span class=" smalltextsize">{{nouns[n]["keyword"]}}</span> <b><span class="green-text smalltextsize"> {{ "${:,.0f}".format(nouns[n]["wordValue"]) }}</span></b> <br>
-            {% endfor %}
-        </div>
-        <div class="col s3">
-            {% for n in range(nouns|length)%}
-                {% for c in range(nouns[n]["keyword_count"]) %}
-                    <i class="material-icons tiny green">attach_money</i>
-                {% endfor %}<br>
-             {% endfor %}
-            <br>
-        </div>
-        <div class="col s3">
-            {% for n in range(adjectives|length)%}
-            <span class="smalltextsize"> {{adjectives[n]["keyword"]}}</span><b> <span class="green-text smalltextsize">  {{ "${:,.2f}".format(adjectives[n]["wordValue"]) }}</span></b> <br>
-            {% endfor %}
-
-        </div>
-        <div class="col s3">
-            {% for n in range(adjectives|length)%}
-                {% for c in range(adjectives[n]["keyword_count"]) %}
-                    <i class="material-icons tiny green">attach_money</i>
-                {% endfor %}<br>
-            {% endfor %}
-
-        </div>
-   </div>
-       <div class="row grey lighten-3" center>
-        <div class ="col s6 ">
-            <h6>Top Verbs</h6>
-        </div>
-        <div class ="col s6">
-            <h6>Top Adverbs</h6>
-        </div>
-
-        <div class="col s3 ">
-            {% for n in range(verbs|length)%}
-            <span class=" smalltextsize"> {{verbs[n]["keyword"]}}</span> <b><span class="green-text smalltextsize"> {{ "${:,.0f}".format(verbs[n]["wordValue"]) }}</span></b> <br>
-            {% endfor %}
-        </div>
-        <div class="col s3 ">
-            {% for n in range(verbs|length)%}
-                {% for c in range(verbs[n]["keyword_count"]) %}
-                    <i class="material-icons tiny green">attach_money</i>
-                {% endfor %}<br>
-             {% endfor %}
-            <br>
-        </div>
-        <div class="col s3 ">
-            {% for n in range(adverbs|length)%}
-                <span class=" smalltextsize"> {{adverbs[n]["keyword"]}}</span><b> <span class="green-text smalltextsize">  {{ "${:,.2f}".format(adverbs[n]["wordValue"]) }}</span></b>
-            {% endfor %}
-
-        </div>
-        <div class="col s3  ">
-            {% for n in range(adverbs|length)%}
-                {% for c in range(adverbs[n]["keyword_count"]) %}
-                    <i class="material-icons tiny green">attach_money</i>
-                {% endfor %}<br>
-            {% endfor %}
-        <br>
-
-        </div>
-    <br>
-    </div>
 
 
       <div class="row ">
@@ -249,7 +277,7 @@
             <th>Keyword</th>
             <th>Part of Speech</th>
             <th>Job</th>
-            <th>Dollar Value</th>
+            <th>Wordstimate</th>
            <th>Score</th>
         </tr>
        </thead>
@@ -258,8 +286,16 @@
 
       </div>
 
-      <br><br>
-    <div id="sigma-container"></div>
+
+ <h6>Explore related jobs linked by shared keywords </h6>
+       <p class="grey-text"> <i class="material-icons tiny">mouse</i> Double click and drag the jobs on the network visualization to explore different career paths!</p>
+  </div>
+
+      <div class="grey lighten-5">
+
+          <div id="sigma-container"></div>
+      </div><br>
+
 
         <script>
                 var nodes = {{ nodes| tojson }};
@@ -284,13 +320,33 @@
       nodes: nodes,
       edges: edges
     });
-
+    s.bind('doubleClickNode', function(e) {
+        console.log(e.type, e.data.node.label, e.data.captor);
+        resultsURL = "/result/" + e.data.node.label;
+        window.location.href = resultsURL;
+    });
     // Finally, let's ask our sigma instance to refresh:
     s.refresh();
 
         // launch force-atlas for 5sec
     s.startForceAtlas2();
-    window.setTimeout(function() {s.killForceAtlas2()}, 10000);
+    window.setTimeout(function() {s.killForceAtlas2()}, 2000);
+
+    // Initialize the dragNodes plugin:
+    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+
+    dragListener.bind('startdrag', function(event) {
+      console.log(event);
+    });
+    dragListener.bind('drag', function(event) {
+      console.log(event);
+    });
+    dragListener.bind('drop', function(event) {
+      console.log(event);
+    });
+    dragListener.bind('dragend', function(event) {
+      console.log(event);
+    });
 
         </script>
     </div>
@@ -302,35 +358,24 @@
   <footer class="page-footer grey ">
     <div class="container">
       <div class="row">
-        <div class="col l6 s12">
+        <div class="col l9 s12">
           <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">Just a couple of guys trying to make their first million (or 2)</p>
+          <p class="grey-text text-lighten-4">Large companies like Google, Microsoft and Facebook deploy cutting edge machine learning and statistical methods to make better products and increase their profit.  Now the same techniques are available to help you select the most relevant words on your resume and earn more money! </p>
 
 
         </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
+ -
         <div class="col l3 s12">
           <h5 class="white-text">Connect</h5>
           <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
+            <li><a class="white-text darken-4" href="https://docs.google.com/forms/d/e/1FAIpQLSdEYUo-uJ1RXnSmFzYTBpOTzZBFyr1ZNpbl6lMkGznTbfYU2g/viewform">  <i class="material-icons tiny">email</i>  Contact or Feedback</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="orange-text text-lighten-3">Doug Meyers</a>
+      Made by <a class="green-text text-lighten-3">Doug Meyers</a>
       </div>
     </div>
   </footer>

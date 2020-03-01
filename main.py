@@ -10,6 +10,8 @@ from databaseConnection import dbConnection
 import random
 db = dbConnection()
 
+
+
 #https://visjs.github.io/vis-network/examples/static/jsfiddle.1e459ff7d7345694e4e5563fcf087a54980b2d41e612c02f7f5133da1c4da9f5.html
 def buildGraph(keywords):
     #get 15 keywords
@@ -17,7 +19,7 @@ def buildGraph(keywords):
     graph = {}
 
     for word in keywords_trim:
-        returnQuery = db.returnQueryValues(word['keyword'],4)
+        returnQuery = db.returnQueryValues(word['keyword'],3)
         print("return query start")
         print(returnQuery)
         for object in returnQuery:
@@ -83,6 +85,10 @@ def buildGraph(keywords):
 
     return graph_objects
 
+def returnNormalizedCount(value1, value2):
+    return int(value1/value2 *10)
+
+app.jinja_env.globals.update(returnNormalizedCount=returnNormalizedCount)
 
 # Path to render the html to display the search page
 @app.route('/')
@@ -103,7 +109,11 @@ def diplayresult(searchQuery):
     data = db.returnKeywordValues(searchQuery)
     print(data)
     graph = buildGraph(data["all"])
-    return render_template('results2.html',searchQuery=searchQuery, data=data["all"], verbs =data["verbs"], nouns = data["nouns"], adjectives = data["adjectives"], adverbs = data["adverbs"],   nodes=graph['nodes'], edges=graph['edges'])
+    return render_template('results2.html', searchQuery=searchQuery, data=data["all"], verbs =data["verbs"], nouns = data["nouns"], adjectives = data["adjectives"], adverbs = data["adverbs"], high_keyword = data["high_keyword"],   nodes=graph['nodes'], edges=graph['edges'])
+
+@app.route('/test')
+def test():
+        return "I Work!!!!"
 
 # run flask app
 if __name__ == '__main__':

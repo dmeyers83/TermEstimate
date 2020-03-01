@@ -14,6 +14,8 @@ def scrape_call(searchQuery):
     print("#### page values ####")
     print(scrapper_object.page_data_list)
     scrapper_data_all =  scrapper_object.full_result
+    df_all_scraped_data = pd.DataFrame(scrapper_data_all)
+    df_all_scraped_data.to_csv('scrapedataall.csv')
     print("#### json objects ####")
     termEstimator_object = termEstimator(scrapper_object.page_data_list, scrapper_data_all)
     print(termEstimator_object.agg_data())
@@ -29,7 +31,7 @@ roles = ["IT Project Manager","Technology Product Manager","Data Scientist", "De
 #roles = ["Marketing Manager", "Brand Manager", "Digital Marketing Manager"]
 domain = "Information_Technology"
 
-#roles = ["IT Project Manager"]
+#roles = ["Technology Product Manager"]
 #domain = "Project_Manager"
 
 df_granular = pd.DataFrame()
@@ -46,7 +48,7 @@ for job in roles:
     df_summary= df_summary.append(df_2_summary)
 
     #conjoint analysis
-    conjointKeywords = keywordValue(df_2,df_2_summary)
+    conjointKeywords = keywordValue(df_2,df_2_summary) #initilize
     conjointKeywords.setJobSalary(job)
     conjointKeywords.filterTopKeywords()
     conjointKeywords.conjointDataPrep()

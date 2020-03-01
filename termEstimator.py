@@ -5,6 +5,9 @@ from sklearn.feature_extraction.text import TfidfTransformer
 import pandas as pd
 import re
 
+#load linked in skills list
+linkedin_skills_list=  [line.rstrip('\n').lower() for line in open('all_linked_skills_lower.txt', encoding="utf8")]
+linkedin_skill_multiplyer = 1.25
 
 class termEstimator:
 
@@ -85,13 +88,14 @@ class termEstimator:
 
             # generate tf-idf for the given document
             tf_idf_vector = tfidf_transformer.transform(cv.transform([doc]))
+            print("tf_idf_vector")
+            print(tf_idf_vector)
 
             # sort the tf-idf vectors by descending order of scores
             sorted_items = self.sort_coo(tf_idf_vector.tocoo())
 
             # extract only the top n; n here is 10
-            keywords = self.extract_topn_from_vector(feature_names, sorted_items, 10)
-
+            keywords = self.extract_topn_from_vector(feature_names, sorted_items, 15)
             # now print the results
             print("\n=====Doc=====")
             print(doc)
@@ -99,6 +103,9 @@ class termEstimator:
             list_item = []
             for k in keywords:
                 tagged = nltk.pos_tag(nltk.word_tokenize(k))
+                if k in linkedin_skills_list:
+                    keywords[k] = keywords[k] * linkedin_skill_multiplyer
+                    print("linked in skill found! " + k)
                 term_list.append([k, keywords[k], str(tagged[0][1]),item[0],item[1],item[3]])
                 print(k, keywords[k])
 
