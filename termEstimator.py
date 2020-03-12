@@ -84,7 +84,7 @@ class termEstimator:
             feature_names = cv.get_feature_names()
 
             # get the document that we want to extract keywords from
-            doc = item[4]
+            doc = item[3]
 
             # generate tf-idf for the given document
             tf_idf_vector = tfidf_transformer.transform(cv.transform([doc]))

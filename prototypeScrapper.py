@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import re
 from gensim.parsing.preprocessing import remove_stopwords
+import pandas as pd
 
 class prototypeScrapper:
     # create a webdriver object and set options for headless browsing
@@ -16,13 +17,15 @@ class prototypeScrapper:
     job_company_list = []
     index = [0]
     full_result = []
+    df_all_scraped_data = pd.DataFrame()
 
     def __init__(self, q='Python Developer', l='New+York+State'):
         self.page_data_list = []
         self.allLinks = []
         self.job_title_list = []
         self.job_company_list = []
-        full_result = []
+        self.full_result = []
+        self.df_all_scraped_data = pd.DataFrame()
         self.run_indeed_query(q,l)
         self.write_lst(self.allLinks, "link_list.csv")
         return self.scrape_pages()
@@ -134,6 +137,11 @@ class prototypeScrapper:
             self.page_data_list.append(page_data)
 
         self.index.pop(0)#remove 0 index value
-        self.full_result.extend(list(zip(self.index, self.job_company_list, self.allLinks, self.job_title_list, self.page_data_list)))
+        self.full_result.extend(list(zip(self.job_company_list, self.allLinks, self.job_title_list, self.page_data_list)))
+
+        self.df_all_scraped_data = pd.DataFrame(self.full_result, columns=['company','link','title','data'])
+        self.df_all_scraped_data.drop_duplicates(subset =["company",'title','data'],keep=False, inplace=True)
+        self.full_result =  self.df_all_scraped_data.values.tolist()
+
         print("##full result###")
         print (self.full_result)

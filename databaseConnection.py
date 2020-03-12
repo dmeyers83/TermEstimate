@@ -2,6 +2,8 @@ from pymongo import MongoClient
 #https://api.mongodb.com/python/current/tutorial.html
 from datetime import datetime
 import json
+import pandas as pd
+
 class dbConnection:
     client = MongoClient()
     testhost = "localhost"
@@ -17,8 +19,6 @@ class dbConnection:
             self.client = MongoClient(self.devURI)
         else:
             self.client = MongoClient(self.prodURI)
-            DB = 'askbezos'
-
         self.nameDB = self.client[DB]
 
         self.nameCollection = self.nameDB[collection]
@@ -57,3 +57,7 @@ class dbConnection:
 
         print (list_result)
         return (list_result)
+
+    def insert_df(self, df):
+        records = json.loads(df.T.to_json()).values()
+        self.nameCollection.insert_many(records)
