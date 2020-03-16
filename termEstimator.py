@@ -69,7 +69,7 @@ class termEstimator:
         # create a vocabulary of words,
         # ignore words that appear in 97% of documents,
         # eliminate stop words
-        cv = CountVectorizer(token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b', stop_words=stopwords,
+        cv = CountVectorizer(max_df=0.90, token_pattern=u'(?ui)\\b\\w*[a-z]+\\w*\\b', stop_words=stopwords,
                              max_features=10000, ngram_range=(1,2))
         word_count_vector = cv.fit_transform(docs)
 
@@ -102,18 +102,20 @@ class termEstimator:
             print("\n===Keywords===")
             list_item = []
             for k in keywords:
+                li = 0
                 tagged = nltk.pos_tag(nltk.word_tokenize(k))
                 if k in linkedin_skills_list:
                     keywords[k] = keywords[k] * linkedin_skill_multiplyer
                     print("linked in skill found! " + k)
-                term_list.append([k, keywords[k], str(tagged[0][1]),item[0],item[1],item[3]])
+                    li = 1
+                term_list.append([k, keywords[k], str(tagged[0][1]),item[0],item[1],item[3],li])
                 print(k, keywords[k])
 
         return term_list
 
     def agg_data(self):
         term_list= self.term_data
-        self.df = pd.DataFrame(term_list, columns=["keyword", "Score", "POS","job_ID", "Company","Title"]) # Initialize Dataframe
+        self.df = pd.DataFrame(term_list, columns=["keyword", "Score", "POS","job_ID", "Company","Title",'Skill']) # Initialize Dataframe
 
         #map to higher level POS
         self.df['POS'] = self.df['POS'].map({'NN': 'Noun', 'NNS': 'Noun','NNP ': 'Noun Proper','NNPS': 'Noun Proper','VB': 'Verb','VBD': 'Verb','VBG': 'Verb','VBN': 'Verb','VBP': 'Verb','VBZ': 'Verb',

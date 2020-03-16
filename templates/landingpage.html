@@ -22,16 +22,49 @@
         .gborder {
 
         border-radius: 15px;
-
     }
+          .input-field.input-outlined > input {
+	 border: 2px solid #eee;
+	 padding: 12px 16px 14px;
+	 width: calc(100% - 2.5rem);
+	 float: none;
+	 display: block;
+	 border-radius: 4px;
+	 transition: box-shadow, border-color 0.15s;
+}
+ .input-field.input-outlined > input:focus:not([readonly]) {
+	 border-color: #32a662;
+	 box-shadow: 0 1px 0 0px #26a69b;
+}
+ .input-field.input-outlined > label {
+	 left: 27px;
+	 display: inline-flex;
+	 width: auto !important;
+}
+ .input-field.input-outlined > label.active {
+	 background: white;
+	 border-left: 4px solid white;
+	 border-right: 4px solid white;
+	 transform: translateY(-1.75rem);
+	 top: 1rem;
+}
+
+.gray {
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}
+
 
 
   </style>
     <script>
 
         var searchValues = {{ searchValues| tojson }};
+        var directory = {{ directory | tojson }};
         console.log("List of Search Values");
         var queryValueArray = Object.keys(searchValues);
+        console.log("List of directory Values");
+       console.log(directory);
 
         document.addEventListener('DOMContentLoaded', function() {
           var elems = document.querySelectorAll('.autocomplete');
@@ -108,25 +141,26 @@
 
     <div class="row center">
           <a href="https://www.moneyword.io"><img src="{{url_for('static', filename='moneyword.png')}}" alt="logo"><h8 class="red-text">Beta</h8></a><br>
-          <h6 class="header col s12 light center ">Find out what resume words will help you earn more money</h6>
+          <h6 class="header col s12 light center grey-text text-darken-1">Find out which resume words are worth the most on your resume</h6>
       </div>
-      <div class="row center">
 
-      </div>
       <div class="row center">
           <form class="col s12">
               <div class="row">
-                <div class="input-field col s12">
-                  <i class="material-icons prefix">search</i>
+                <div class="input-field input-outlined col s12">
+
                   <input type="text" id="autocomplete-input" class="autocomplete querytext">
-                  <label for="autocomplete-input">Search for a Job</label>
+                  <label class="black-text" for="autocomplete-input"><i class="material-icons  left">search</i>Select a job to search for resume keywords</label>
 <!--                  <textarea id="icon_prefix2" class="materialize-textarea querytext"></textarea>-->
 <!--                  <label for="icon_prefix2">Search for a Job</label>-->
+
                 </div>
               </div>
+
         </form>
 
-        <a class="waves-effect waves-light btn-large green searchbutton"><i class="material-icons left">arrow_forward</i>Search</a>
+ <a class="btn-large waves-effect waves-light  green searchbutton valign-wrapper">Search for Keywords</a>
+
       </div>
       <br><br>
 
@@ -148,33 +182,90 @@
   </div><br>
 <h6>Please wait while we load your data</h6>
 </div>
-<div class="row  grey lighten-2">
+<div class="row  green lighten-5">
   <div class="container">
 
-  <div class="carousel carousel-slider ">
-         <div class="carousel-item " href="#three!">
-           <h6 class="black-text "><i class="material-icons small">blur_on</i>Explore your career path by learning how different words/skills connect to other jobs  </h6>
-      <img class="gborder " src="{{url_for('static', filename='graphresize.png')}}" alt="logo"><Br><Br>
+<!--  <div class="carousel carousel-slider ">-->
+<!--         <div class="carousel-item " href="#three!">-->
+<!--           <h6 class="black-text "><i class="material-icons small">blur_on</i>Explore your career path by learning how different words/skills connect to other jobs  </h6>-->
+<!--      <img class="gborder " src="{{url_for('static', filename='graphresize.png')}}" alt="logo"><Br><Br>-->
 
-    </div>
-    <div class="carousel-item  " href="#one!">
-        <h6 class="black-text"><i class="material-icons small">trending_up</i> View how much each resume word is worth for your job </h6>
-      <img class="gborder " src="{{url_for('static', filename='Topkeywords5.PNG')}}" alt="logo"><br>
-    </div>
-
-
-    <div class="carousel-item " href="#two!">
-        <h6 class="black-text"><i class="material-icons small">dvr</i> Analyze the top 50 resume words </h6>
-      <img class="gborder " src="{{url_for('static', filename='detailedscoreresize.PNG')}}" alt="logo">
-    </div>
+<!--    </div>-->
+<!--    <div class="carousel-item  " href="#one!">-->
+<!--        <h6 class="black-text"><i class="material-icons small">trending_up</i> View how much each resume word is worth for your job </h6>-->
+<!--      <img class="gborder " src="{{url_for('static', filename='Topkeywords5.PNG')}}" alt="logo"><br>-->
+<!--    </div>-->
 
 
-  </div>
+<!--    <div class="carousel-item " href="#two!">-->
+<!--        <h6 class="black-text"><i class="material-icons small">dvr</i> Analyze the top 50 resume words </h6>-->
+<!--      <img class="gborder " src="{{url_for('static', filename='detailedscoreresize.PNG')}}" alt="logo">-->
+<!--    </div>-->
+
+
+<!--  </div>-->
+
+      <div class="row">
+        <div class="col s12 m4 ">
+          <div class="icon-block ">
+              <h2 class="center light-blue-text"><img class="gray " width="100" height="100" src="{{url_for('static', filename='chip-head.png')}}" alt="logo"></h2>
+            <h5 class=" center">Finds the keywords hiring managers want</h5>
+
+            <p class="light">We looked through over 200 job descriptions and selected the best keywords</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4 ">
+          <div class="icon-block ">
+             <h2 class="center light-blue-text"><img class="gray " width="100" height="100" src="{{url_for('static', filename='monitor-cash-credit-card.png')}}" alt="logo"></h2>
+            <h5 class="center">Know the value of a resume word</h5>
+
+            <p class="light">We have assigned a dollar estimate to each word (wordstimate) with a state-of-the-art algorithim.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4 ">
+          <div class="icon-block ">
+             <h2 class="center light-blue-text"><img width="100" class="gray " height="100" src="{{url_for('static', filename='monitor-window.png')}}" alt="logo"></h2>
+            <h5 class="center">Learn keywords linked to higher salaries</h5>
+
+            <p class="light">Search for words that link to different career paths and higher paying jobs</p>
+          </div>
+        </div>
+      </div>
+
+
 </div>
 
 
 
   </div>
+
+  <div class="row ">
+  <div class="container">
+
+      <div class="row">
+        <div class="col s12 m4 ">
+        1
+        </div>
+
+        <div class="col s12 m4 ">
+          2
+        </div>
+
+        <div class="col s12 m4 ">
+         3
+        </div>
+      </div>
+
+
+</div>
+
+
+
+  </div>
+
+
 <br><br>
   <footer class="page-footer grey ">
     <div class="container">

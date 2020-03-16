@@ -11,12 +11,15 @@ db = dbConnection() #insert in keyword collection
 
 db2= dbConnection(collection='all_data') #insert in all data collection
 
-def scrape_call(searchQuery,domain):
+def scrape_call(searchQuery,domain,domain2):
     scrapper_object = prototypeScrapper(searchQuery)
     print("#### page values ####")
     print(scrapper_object.page_data_list)
     scrapper_data_all =  scrapper_object.full_result
     scrapper_object.df_all_scraped_data['domain'] = domain
+    scrapper_object.df_all_scraped_data['domain2'] = domain2
+    scrapper_object.df_all_scraped_data['query'] = searchQuery
+    scrapper_object.df_all_scraped_data['run'] = "run1"
     db2.insert_df(scrapper_object.df_all_scraped_data)
     scrapper_object.df_all_scraped_data.to_csv('scrapedataall.csv')
     print("#### json objects ####")
@@ -31,28 +34,31 @@ def scrape_call(searchQuery,domain):
 #roles = df_BLS.OCC_TITLE.unique()
 #roles = ["IT Project Manager","Technology Product Manager","Data Scientist", "DevOps Engineer","Software Engineer","Data Engineer","Solutions Architect","Data Analyst","Full Stack Developer","Development Manager","CTO","CIO","Security Engineer","Mobile Application Developer","Senior Web Developer","Cloud Solutions Architect", "Information Technology Manager","Applications Architect","Big data engineer","Information systems security manager","Data security analyst"]
 
-roles = ["Marketing Manager", "Brand Manager", "Digital Marketing Manager"]
-#domain = "Information_Technology"
+#roles = ["Accountant", "Brand Manager", "Digital Marketing Manager"]
+roles = ["Accountant", "Accounting Manager", "Controller"]
+domain = "Finance"
 
 #roles = ["Technology Product Manager"]
-domain = "Marketing"
-
+#domain = "Marketing"
+job_df = pd.read_csv('job_db_clean.csv') #avg salary per job
 df_granular = pd.DataFrame()
 df_summary = pd.DataFrame()
 df_2 = pd.DataFrame()
-for job in roles:
+#for job in roles:
+for index, row in job_df.iterrows():
     df_2 = df_2.iloc[0:0]
-    df_2 = scrape_call(job, domain)
-    df_2['query'] = job
+    df_2 = scrape_call(row["Job"], row["Category"], row['Category_2'])
+    df_2['query'] = row["Job"]
     df_2['time'] = datetime.now()
-    df_2['domain'] = domain
+    df_2['domain'] = row["Category"]
+    df_2['domain2'] = row["Category_2"]
     df_granular = df_granular.append(df_2)
-    df_2_summary = df_2.groupby(['keyword', 'POS', 'time', 'query','domain'], as_index=False)['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'], ascending=False)
+    df_2_summary = df_2.groupby(['keyword', 'POS', 'time', 'query','domain','domain2','Skill'], as_index=False)['Score'].agg({"keyword_count": "count"}).sort_values(['keyword_count'], ascending=False)
     df_summary= df_summary.append(df_2_summary)
 
     #conjoint analysis
     conjointKeywords = keywordValue(df_2,df_2_summary) #initilize
-    conjointKeywords.setJobSalary(job)
+    conjointKeywords.setJobSalary(row["Job"])
     conjointKeywords.filterTopKeywords()
     conjointKeywords.conjointDataPrep()
     conjointKeywords.runConjoint()

@@ -8,7 +8,9 @@ import json
 app = Flask(__name__)
 from databaseConnection import dbConnection
 import random
-db = dbConnection()
+db = dbConnection() #keyword
+
+db2 = dbConnection(collection='directory')
 
 
 
@@ -99,7 +101,10 @@ def displaySearch():
     queryDict = { i : None for i in query } #format into dict format
 
     print(queryDict)
-    return render_template('landingpage.html', searchValues=queryDict)
+
+    directory = db2.returnDirectory()
+
+    return render_template('landingpage.html', searchValues=queryDict,directory = directory)
 
 
 # path to render the results page.  the searchQuery parameter is passed from the landing page.
@@ -109,6 +114,9 @@ def diplayresult(searchQuery):
     data = db.returnKeywordValues(searchQuery)
     print(data)
     graph = buildGraph(data["all"])
+
+
+
     return render_template('results2.html', searchQuery=searchQuery, data=data["all"], verbs =data["verbs"], nouns = data["nouns"], adjectives = data["adjectives"], adverbs = data["adverbs"], high_keyword = data["high_keyword"],   nodes=graph['nodes'], edges=graph['edges'])
 
 @app.route('/test')

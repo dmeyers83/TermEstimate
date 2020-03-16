@@ -11,7 +11,7 @@ class keywordValue:
     #class variables
     keyword_df = pd.DataFrame() #keywords indivdual word and score
     keyword_summary_df = pd.DataFrame() # keywords summary
-    salary_df = pd.read_csv('job_avg_salaries.csv') #avg salary per job
+    salary_df = pd.read_csv('job_db_clean.csv') #avg salary per job
     avg_salary = 0 #salary of a given job
     df2 = pd.DataFrame() #feature matrix holding dataframe
     feature_matrix = pd.DataFrame()   #feature matrix for conjoint analysis
@@ -38,7 +38,7 @@ class keywordValue:
     #set job salary
     def setJobSalary(self, job_role):
         try:
-            self.avg_salary = int(self.salary_df[self.salary_df['Job_Tittle'] == job_role].iloc[0]['Avg_Salary'])
+            self.avg_salary = int(self.salary_df[self.salary_df['Job'] == job_role].iloc[0]['Avg_Salary'])
         except: # return 0 if not found
             self.avg_salary = 0
 

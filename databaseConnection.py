@@ -51,7 +51,7 @@ class dbConnection:
         return ({"all":list_result,"nouns":nouns,"verbs":verbs,"adjectives":adjectives, "adverbs":adverbs,"high_keyword":topNum})
 
     def returnQueryValues(self, keyword, limit_amount=5):
-        result = self.nameCollection.find({"keyword": keyword}, {"_id": 0, "time": 0}).sort("keyword_count", -1).limit(limit_amount)
+        result = self.nameCollection.find({"keyword": keyword,"Skill":1}, {"_id": 0, "time": 0}).sort("keyword_count", -1).limit(limit_amount)
         list_result = list(result)
 
 
@@ -61,3 +61,9 @@ class dbConnection:
     def insert_df(self, df):
         records = json.loads(df.T.to_json()).values()
         self.nameCollection.insert_many(records)
+
+    def returnDirectory(self):
+        result = self.nameCollection.find({} ,{"_id": 0})
+        list_result = list(result)
+        print (list_result)
+        return (list_result)

@@ -161,6 +161,7 @@
 
   gtag('config', 'UA-159357780-1');
 </script>
+    <img src="../../AppData/Local/Temp/moneyword.png"/>
 </head>
 
 <body>
@@ -250,7 +251,7 @@
 
                     <div class="col s6 ">
                         {% for n in range(adverbs|length)%}
-                            <span class=" smalltextsize"> {{adverbs[n]["keyword"]}}</span><b> <span class="green-text smalltextsize">  {{ "${:,.2f}".format(adverbs[n]["wordValue"]) }}</span></b>
+                            <span class=" smalltextsize"> {{adverbs[n]["keyword"]}}</span><b> <span class="green-text smalltextsize">  {{ "${:,.2f}".format(adverbs[n]["wordValue"]) }}</span></b><br>
                         {% endfor %}
 
                     </div>

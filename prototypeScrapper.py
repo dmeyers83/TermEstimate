@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import re
 from gensim.parsing.preprocessing import remove_stopwords
 import pandas as pd
+from datetime import datetime
 
 class prototypeScrapper:
     # create a webdriver object and set options for headless browsing
@@ -13,18 +14,20 @@ class prototypeScrapper:
 
     allLinks = []  # list to capture
     page_data_list = []  # list of all docuemnts
+    raw_page_data_list = []  # list of all docuemnts
     job_title_list = []
     job_company_list = []
     index = [0]
     full_result = []
     df_all_scraped_data = pd.DataFrame()
 
-    def __init__(self, q='Python Developer', l='New+York+State'):
+    def __init__(self, q='Python Developer', l=''):
         self.page_data_list = []
         self.allLinks = []
         self.job_title_list = []
         self.job_company_list = []
         self.full_result = []
+        self.raw_page_data_list = []
         self.df_all_scraped_data = pd.DataFrame()
         self.run_indeed_query(q,l)
         self.write_lst(self.allLinks, "link_list.csv")
@@ -89,9 +92,9 @@ class prototypeScrapper:
         print(self.job_title_list)
         return indeed_links
 
-    def run_indeed_query(self, q='Python Developer', l='New+York+State'):
+    def run_indeed_query(self, q='Python Developer', l=''):
         start = 0  # pagnigation variable, page 1 = 0, page 2 = 10, page 3 = 30, etc
-        numPage = 10  # num pages to scrap links from
+        numPage = 20  # num pages to scrap links from
 
         for page_result in range(numPage):
             start = page_result * 10  # increment the variable used to denote the next page
@@ -118,7 +121,7 @@ class prototypeScrapper:
             footer_position = page_data.find('save job')  # find the position of 'save job' which starts the footer
             trimStringBy = footer_position - len(page_data)  # returns a negative number to trim the string by
             page_data = page_data[:trimStringBy]  # drop footer
-
+            self.raw_page_data_list.append((page_data))
             #Drop tech before requirements/skills/qualifications sections
             drop_company_pos = 100000000 #high value to start
             description_skills = ['responsibility','responsibilities','qualities','skills','must haves','requirements','qualifications','duties','required']
@@ -137,10 +140,11 @@ class prototypeScrapper:
             self.page_data_list.append(page_data)
 
         self.index.pop(0)#remove 0 index value
-        self.full_result.extend(list(zip(self.job_company_list, self.allLinks, self.job_title_list, self.page_data_list)))
+        self.full_result.extend(list(zip(self.job_company_list, self.allLinks, self.job_title_list, self.page_data_list, self.raw_page_data_list)))
 
-        self.df_all_scraped_data = pd.DataFrame(self.full_result, columns=['company','link','title','data'])
+        self.df_all_scraped_data = pd.DataFrame(self.full_result, columns=['company','link','title','data','raw_data'])
         self.df_all_scraped_data.drop_duplicates(subset =["company",'title','data'],keep=False, inplace=True)
+        self.df_all_scraped_data['time'] = datetime.now()
         self.full_result =  self.df_all_scraped_data.values.tolist()
 
         print("##full result###")
